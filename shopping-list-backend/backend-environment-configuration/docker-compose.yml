@@ -5,6 +5,7 @@ services:
     image: postgres:14-alpine
     container_name: shopping-list-postgresql-database
     restart: unless-stopped
+    env_file: ./.env
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
