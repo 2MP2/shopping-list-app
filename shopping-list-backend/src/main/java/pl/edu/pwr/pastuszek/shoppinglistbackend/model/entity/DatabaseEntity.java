@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -7,6 +8,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +26,10 @@ public class DatabaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     protected UUID id;
+
+    @JsonIgnore
+    protected Timestamp deleted = null;
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,9 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
@@ -17,8 +14,7 @@ import java.sql.Timestamp;
 @ToString(callSuper = true)
 @Builder
 public class Invitation extends DatabaseEntity{
-    private Timestamp creationDate;
-    private Timestamp deleteDate;
+    @Column(name = "expiration_date")
     private Timestamp expirationDate;
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")

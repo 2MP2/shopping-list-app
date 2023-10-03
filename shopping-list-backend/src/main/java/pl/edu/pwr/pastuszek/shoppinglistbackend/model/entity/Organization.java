@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,18 +17,19 @@ import java.util.List;
 @Builder
 public class Organization extends DatabaseEntity {
     private String name;
-    private Timestamp creationDate;
-    private Timestamp deleteDate;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User owner;
     @OneToMany(mappedBy = "organization")
     @ToString.Exclude
+    @JsonIgnore
     private List<ShoppingList> shoppingLists;
     @OneToMany(mappedBy = "organization")
     @ToString.Exclude
+    @JsonIgnore
     private List<Invitation> invitations;
     @OneToMany(mappedBy = "organization")
     @ToString.Exclude
+    @JsonIgnore
     private List<UserOrganization> userOrganizations;
 }

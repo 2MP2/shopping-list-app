@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -21,5 +22,6 @@ public class Bill extends DatabaseEntity {
     private String comment;
     @OneToMany(mappedBy = "bill")
     @ToString.Exclude
+    @JsonIgnore
     private List<Product> products;
 }

@@ -1,11 +1,11 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @Table(name = "user", schema = "public", catalog = "shopping_list_db")
@@ -23,12 +23,12 @@ public class User extends DatabaseEntity {
     private String email;
     private String login;
     private String password;
-    private Timestamp creationDate;
-    private Timestamp deleteDate;
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
+    @JsonIgnore
     private List<UserOrganization> userOrganizations;
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
+    @JsonIgnore
     private List<Invitation> invitations;
 }

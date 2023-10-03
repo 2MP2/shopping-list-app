@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,12 +17,11 @@ import java.util.List;
 @Builder
 public class ShoppingList extends DatabaseEntity {
     private String name;
-    private Timestamp creationDate;
-    private Timestamp deleteDate;
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
     @OneToMany(mappedBy = "shoppingList")
     @ToString.Exclude
+    @JsonIgnore
     private List<Product> products;
 }

@@ -1,7 +1,5 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service;
 
-import org.springframework.validation.annotation.Validated;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,4 +24,6 @@ public interface CrudService<U, D> {
     D update(UUID id, U u) throws RuntimeException;
 
     void delete(UUID id);
+
+    void softDelete(UUID id);
 }
