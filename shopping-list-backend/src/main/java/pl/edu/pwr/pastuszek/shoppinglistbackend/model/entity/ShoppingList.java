@@ -4,18 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "shopping_list", schema = "public", catalog = "shopping_list_db")
-@Entity
+@jakarta.persistence.Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Builder
-public class ShoppingList extends DatabaseEntity {
+public class ShoppingList implements Entity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private String name;
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")

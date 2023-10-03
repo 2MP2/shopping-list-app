@@ -25,5 +25,4 @@ public interface CrudService<U, D> {
 
     void delete(UUID id);
 
-    void softDelete(UUID id);
 }

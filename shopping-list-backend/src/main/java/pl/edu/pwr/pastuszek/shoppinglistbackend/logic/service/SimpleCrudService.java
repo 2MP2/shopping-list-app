@@ -3,9 +3,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.DatabaseEntity;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -14,9 +13,9 @@ import java.util.UUID;
  * This is an abstract class for simple CRUD services.
  * This class doesn't take care of mapping entities - it takes and returns the exact same object that is defined in
  * {@link pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity}  package.
- * @param <T> the domain type the service manage. Extends {@link pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.DatabaseEntity} class.
+ * @param <T> the domain type the service manage. Extends {@link Entity} class.
  */
-public abstract class SimpleCrudService<T extends DatabaseEntity>
+public abstract class SimpleCrudService<T extends Entity>
         extends AbstractCrudService<T, T, T>
 {
 
@@ -26,18 +25,13 @@ public abstract class SimpleCrudService<T extends DatabaseEntity>
 
     @Override
     public List<T> list(Map<String, String> params) {
-        return repository
-                .findAll()
-                .stream()
-                .filter(t -> t.getDeleted() == null)
-                .toList();
+        return repository.findAll();
     }
 
     @Override
     public T getOne(UUID id) throws RuntimeException {
         return repository
                 .findById(id)
-                .filter( t -> t.getDeleted() == null)
                 .orElseThrow(() -> {
                     var e = new EntityNotFoundException("Entity of id " + id + " not found!");
                     logger.error(e.getMessage(), e);
@@ -53,10 +47,7 @@ public abstract class SimpleCrudService<T extends DatabaseEntity>
 
     @Override
     public T update(UUID id, T t) throws RuntimeException {
-        if (repository
-                .findById(id)
-                .stream()
-                .noneMatch(entity -> entity.getDeleted() == null)) {
+        if (!repository.existsById(id)) {
             var e = new EntityNotFoundException("Entity " + t.getClass().getSimpleName() + " of id " + id + " doesn't exist!");
             logger.error(e.getMessage(), e);
             throw e;
@@ -69,16 +60,5 @@ public abstract class SimpleCrudService<T extends DatabaseEntity>
     @Override
     public void delete(UUID id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public void softDelete(UUID id) {
-        repository
-                .findById(id)
-                .orElseThrow(() -> {
-                    var e = new EntityNotFoundException("Entity of id " + id + " not found!");
-                    logger.error(e.getMessage(), e);
-                    return e;
-                }).setDeleted(new Timestamp(System.currentTimeMillis()));
     }
 }

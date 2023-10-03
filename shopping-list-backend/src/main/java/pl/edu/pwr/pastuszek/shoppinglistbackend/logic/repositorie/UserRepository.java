@@ -4,5 +4,5 @@ import org.springframework.stereotype.Repository;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.User;
 
 @Repository
-public interface UserRepository extends BaseRepository<User> {
+public interface UserRepository extends SoftDeleteRepository<User> {
 }

@@ -1,22 +1,24 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "bill", schema = "public", catalog = "shopping_list_db")
-@Entity
+@jakarta.persistence.Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Builder
-public class Bill extends DatabaseEntity {
+public class Bill implements Entity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private int amount;
     private String shop;
     private String comment;

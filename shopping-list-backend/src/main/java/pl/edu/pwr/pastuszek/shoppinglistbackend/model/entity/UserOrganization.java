@@ -3,15 +3,20 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 @Table(name = "user_organization", schema = "public", catalog = "shopping_list_db")
-@Entity
+@jakarta.persistence.Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Builder
-public class UserOrganization extends DatabaseEntity{
+public class UserOrganization implements Entity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
