@@ -4,7 +4,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
  * Base interface for all entities with soft delete.
  */
 
-public interface SoftEntity extends Entity{
+
+public interface SoftDeleteEntity extends Entity {
     void setDeleted(boolean deleted);
     boolean isDeleted();
 }
