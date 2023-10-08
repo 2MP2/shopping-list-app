@@ -4,7 +4,7 @@ create table "user"
     surname       varchar   not null,
     number        varchar   not null
         unique,
-    uuid          uuid      not null
+    id            uuid      not null
         constraint user_pk
             primary key,
     email         varchar
@@ -18,7 +18,7 @@ create table "user"
 
 create table bill
 (
-    uuid    uuid    not null
+    id      uuid    not null
         constraint bill_pk
             primary key,
     amount  integer not null,
@@ -28,53 +28,51 @@ create table bill
 
 create table organization
 (
-    uuid          uuid      not null
+    id            uuid      not null
         constraint organization_pk
             primary key,
     name          varchar   not null,
     creation_date timestamp not null,
     delete_date   timestamp,
-    owner_uuid    uuid      not null
+    owner_id      uuid      not null
         constraint organization_user_uuid_fk
-            references "user"
+            references "user" (uuid)
 );
 
 create table shopping_list
 (
-    uuid              uuid      not null
+    id              uuid      not null
         constraint shopping_list_pk
             primary key,
-    name              varchar   not null,
-    creation_date     timestamp not null,
-    delete_date       timestamp,
-    organization_uuid uuid      not null
+    name            varchar   not null,
+    creation_date   timestamp not null,
+    delete_date     timestamp,
+    organization_id uuid      not null
         constraint shopping_list_organization_uuid_fk
-            references organization
+            references organization (uuid)
 );
 
 create table product
 (
-    uuid               uuid    not null
+    id               uuid    not null
         constraint product_pk
             primary key,
-    name               varchar not null,
-    quantity           integer not null,
-    status             varchar,
-    shopping_list_uuid uuid    not null,
-    bill_uuid          uuid
+    name             varchar not null,
+    quantity         integer not null,
+    status           varchar,
+    shopping_list_id uuid    not null,
+    bill_id          uuid
 );
 
 create table user_organization
 (
-    user_uuid         uuid not null
+    user_id         uuid not null
         constraint user_organization_user_uuid_fk
-            references "user",
-    status            varchar,
-    organization_uuid uuid not null
+            references "user" (uuid),
+    status          varchar,
+    organization_id uuid not null
         constraint user_organization_organization_uuid_fk
-            references organization,
+            references organization (uuid),
     constraint user_organization_pk
-        primary key (user_uuid, organization_uuid)
+        primary key (user_id, organization_id)
 );
-
-
