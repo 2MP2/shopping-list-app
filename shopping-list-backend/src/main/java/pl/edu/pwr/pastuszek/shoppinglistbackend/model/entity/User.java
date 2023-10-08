@@ -23,13 +23,16 @@ public class User implements SoftDeleteEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @JsonIgnore
-    @Column(name = "deleted")
     private boolean deleted = Boolean.FALSE;
     private String name;
     private String surname;
+    @Column(unique = true)
     private String number;
+    @Column(unique = true)
     private String email;
+    @Column(unique = true)
     private String login;
+    @JsonIgnore
     private String password;
     @OneToMany(mappedBy = "user")
     @ToString.Exclude

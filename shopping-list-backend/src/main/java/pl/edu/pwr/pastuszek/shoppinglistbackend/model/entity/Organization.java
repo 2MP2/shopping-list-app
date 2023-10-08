@@ -23,7 +23,6 @@ public class Organization implements SoftDeleteEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @JsonIgnore
-    @Column(name = "deleted")
     private boolean deleted = Boolean.FALSE;
     private String name;
     @OneToMany(mappedBy = "organization")
