@@ -18,14 +18,15 @@ public class UserOrganization implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Enumerated(value = EnumType.STRING)
+    private UserOrganizationStatus status;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
-    @Enumerated(value = EnumType.STRING)
-    private UserOrganizationStatus status;
+
 
     @Override
     public final boolean equals(Object o) {
