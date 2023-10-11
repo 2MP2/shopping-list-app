@@ -3,7 +3,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ProductService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Product;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,23 +16,23 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public List<Product> getProductList() {
+    public List<ProductResponseDTO> getProductList() {
         return this.productService.list();
     }
 
     @GetMapping("{id}")
-    public Product getProductById(@PathVariable("id") UUID id) {
+    public ProductResponseDTO getProductById(@PathVariable("id") UUID id) {
         return this.productService.getOne(id);
     }
 
     @PostMapping
-    public Product addUser(@RequestBody Product product) {
-        return this.productService.add(product);
+    public ProductResponseDTO addUser(@RequestBody ProductRequestDTO productRequestDTO) {
+        return this.productService.add(productRequestDTO);
     }
 
     @PutMapping("{id}")
-    public Product updateUser(@PathVariable("id") UUID id, @RequestBody Product product){
-        return this.productService.update(id, product);
+    public ProductResponseDTO updateUser(@PathVariable("id") UUID id, @RequestBody ProductRequestDTO productRequestDTO){
+        return this.productService.update(id, productRequestDTO);
     }
 
     @DeleteMapping("{id}")

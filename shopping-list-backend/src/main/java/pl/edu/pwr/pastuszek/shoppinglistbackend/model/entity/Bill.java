@@ -27,7 +27,7 @@ public class Bill implements Entity {
     @ToString.Exclude
     @JsonIgnore
     private List<Product> products;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
 

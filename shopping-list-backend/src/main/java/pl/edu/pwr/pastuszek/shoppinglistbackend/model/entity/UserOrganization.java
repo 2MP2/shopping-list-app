@@ -7,7 +7,7 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "user_organization", schema = "public", catalog = "shopping_list_db")
+@Table(name = "user_organization", schema = "public", catalog = "shopping_list_db", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "organization_id", "status"}))
 @jakarta.persistence.Entity
 @AllArgsConstructor
 @NoArgsConstructor

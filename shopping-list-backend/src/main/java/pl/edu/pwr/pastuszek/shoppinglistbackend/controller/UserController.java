@@ -3,7 +3,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.User;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,23 +16,23 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<User> getUserList() {
+    public List<UserResponseDTO> getUserList() {
         return this.userService.list();
     }
 
     @GetMapping("{id}")
-    public User getUserById(@PathVariable("id") UUID id) {
+    public UserResponseDTO getUserById(@PathVariable("id") UUID id) {
         return this.userService.getOne(id);
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return this.userService.add(user);
+    public UserResponseDTO addUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return this.userService.add(userRequestDTO);
     }
 
     @PutMapping("{id}")
-    public User updateUser(@PathVariable("id") UUID id, @RequestBody User user){
-        return this.userService.update(id, user);
+    public UserResponseDTO updateUser(@PathVariable("id") UUID id, @RequestBody UserRequestDTO userRequestDTO){
+        return this.userService.update(id, userRequestDTO);
     }
 
     @DeleteMapping("{id}")

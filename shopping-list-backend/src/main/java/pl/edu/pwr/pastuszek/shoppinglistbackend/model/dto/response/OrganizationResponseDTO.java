@@ -1,9 +1,13 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response;
 
+import lombok.Data;
+
+import java.util.List;
 import java.util.UUID;
 
-public record OrganizationResponseDTO (
-        UUID id,
-        String name
-//    , List<ShoppingList> shoppingLists //uncomment when add validation group on Organization endpoint
-){}
+@Data
+public class OrganizationResponseDTO {
+    private UUID id;
+    private String name;
+    private List<ShoppingListResponseDTO> shoppingLists;
+}

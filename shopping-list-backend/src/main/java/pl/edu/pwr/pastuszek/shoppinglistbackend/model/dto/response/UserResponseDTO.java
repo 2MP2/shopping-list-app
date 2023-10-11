@@ -1,10 +1,13 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response;
 
+import lombok.Data;
+
 import java.util.UUID;
 
 
-public record UserResponseDTO (
-    UUID id,
-    String name,
-    String surname
-){}
+@Data
+public class UserResponseDTO {
+    private UUID id;
+    private String name;
+    private String surname;
+}

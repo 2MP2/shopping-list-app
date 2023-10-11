@@ -14,7 +14,7 @@ import java.util.UUID;
  * This is an abstract class for CRUD services which require DTO mapping.
  * It uses {@link DTOMapper} to map requests and responses from given domain entity.
  *
- * @param <T> the domain type the service manage. Extends {@link pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity} class.
+ * @param <T> the domain type the service manage. Implements {@link pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity} interface.
  * @param <U> the request type which is mapped to the domain type.
  * @param <D> the response type which is created from the domain type.
  */
@@ -28,7 +28,6 @@ public abstract class MappedCrudService<T extends Entity, U, D>
         super(repository, logger);
         this.mapper = mapper;
     }
-
 
     @Override
     public List<D> list(Map<String, String> params) {

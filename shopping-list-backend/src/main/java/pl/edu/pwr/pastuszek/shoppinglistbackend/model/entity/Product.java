@@ -22,10 +22,10 @@ public class Product implements Entity {
     private int quantity;
     @Enumerated(value = EnumType.STRING)
     private ProductStatus status = ProductStatus.UNPURCHASED;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
     private Bill bill;
 
