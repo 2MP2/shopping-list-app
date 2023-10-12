@@ -6,8 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "user", schema = "public", catalog = "shopping_list_db")
@@ -37,11 +37,18 @@ public class User implements SoftDeleteEntity {
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     @JsonIgnore
-    private List<UserOrganization> userOrganizations;
+    private Set<UserOrganization> userOrganizations;
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     @JsonIgnore
-    private List<Invitation> invitations;
+    private Set<Invitation> invitations;
+
+    @PreRemove
+    private void preDelete(){
+        for (UserOrganization userOrg: userOrganizations) {
+            userOrg.setDeleted(true);
+        }
+    }
 
     @Override
     public final boolean equals(Object o) {

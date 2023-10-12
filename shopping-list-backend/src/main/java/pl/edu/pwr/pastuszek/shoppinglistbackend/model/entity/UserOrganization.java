@@ -1,31 +1,40 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "user_organization", schema = "public", catalog = "shopping_list_db")
+@Table(name = "user_organization", schema = "public", catalog = "shopping_list_db", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "organization_id", "status"}))
 @jakarta.persistence.Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class UserOrganization implements Entity {
+@Where(clause = "deleted = false")
+public class UserOrganization implements SoftDeleteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-    @ManyToOne
-    @JoinColumn(name = "organization_id", referencedColumnName = "id")
-    private Organization organization;
+    @JsonIgnore
+    private boolean deleted = Boolean.FALSE;
     @Enumerated(value = EnumType.STRING)
     private UserOrganizationStatus status;
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "organization_id", referencedColumnName = "id")
+    private Organization organization;
+
 
     @Override
     public final boolean equals(Object o) {

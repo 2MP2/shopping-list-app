@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "bill", schema = "public", catalog = "shopping_list_db")
@@ -26,10 +26,16 @@ public class Bill implements Entity {
     @OneToMany(mappedBy = "bill")
     @ToString.Exclude
     @JsonIgnore
-    private List<Product> products;
-    @ManyToOne
+    private Set<Product> products;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
+
+    @PreRemove
+    private void preRemove(){
+        for(Product product: products)
+            product.setBill(null);
+    }
 
     @Override
     public final boolean equals(Object o) {

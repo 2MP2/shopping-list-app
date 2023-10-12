@@ -3,7 +3,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ShoppingListService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.ShoppingList;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ShoppingListRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ShoppingListResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,23 +16,23 @@ public class ShoppingListController {
     private final ShoppingListService shoppingListService;
 
     @GetMapping
-    public List<ShoppingList> getShoppingListList() {
+    public List<ShoppingListResponseDTO> getShoppingListList() {
         return this.shoppingListService.list();
     }
 
     @GetMapping("{id}")
-    public ShoppingList getShoppingListById(@PathVariable("id") UUID id) {
+    public ShoppingListResponseDTO getShoppingListById(@PathVariable("id") UUID id) {
         return this.shoppingListService.getOne(id);
     }
 
     @PostMapping
-    public ShoppingList addShoppingList(@RequestBody ShoppingList shoppingList) {
-        return this.shoppingListService.add(shoppingList);
+    public ShoppingListResponseDTO addShoppingList(@RequestBody ShoppingListRequestDTO shoppingListRequestDTO) {
+        return this.shoppingListService.add(shoppingListRequestDTO);
     }
 
     @PutMapping("{id}")
-    public ShoppingList updateShoppingList(@PathVariable("id") UUID id, @RequestBody ShoppingList shoppingList){
-        return this.shoppingListService.update(id, shoppingList);
+    public ShoppingListResponseDTO updateShoppingList(@PathVariable("id") UUID id, @RequestBody ShoppingListRequestDTO shoppingListRequestDTO){
+        return this.shoppingListService.update(id, shoppingListRequestDTO);
     }
 
     @DeleteMapping("{id}")

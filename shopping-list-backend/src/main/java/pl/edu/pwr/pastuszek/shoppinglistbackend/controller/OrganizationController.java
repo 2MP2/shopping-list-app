@@ -3,7 +3,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.OrganizationService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Organization;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.OrganizationRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.OrganizationResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,23 +16,23 @@ public class OrganizationController {
     private final OrganizationService organizationService;
 
     @GetMapping
-    public List<Organization> getUserList() {
+    public List<OrganizationResponseDTO> getUserList() {
         return this.organizationService.list();
     }
 
     @GetMapping("{id}")
-    public Organization getOrganizationById(@PathVariable("id") UUID id) {
+    public OrganizationResponseDTO getOrganizationById(@PathVariable("id") UUID id) {
         return this.organizationService.getOne(id);
     }
 
     @PostMapping
-    public Organization addUser(@RequestBody Organization organization) {
-        return this.organizationService.add(organization);
+    public OrganizationResponseDTO addUser(@RequestBody OrganizationRequestDTO organizationRequestDTO) {
+        return this.organizationService.add(organizationRequestDTO);
     }
 
     @PutMapping("{id}")
-    public Organization updateUser(@PathVariable("id") UUID id, @RequestBody Organization organization){
-        return this.organizationService.update(id, organization);
+    public OrganizationResponseDTO updateUser(@PathVariable("id") UUID id, @RequestBody OrganizationRequestDTO organizationRequestDTO){
+        return this.organizationService.update(id, organizationRequestDTO);
     }
 
     @DeleteMapping("{id}")

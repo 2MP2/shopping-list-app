@@ -20,11 +20,12 @@ public class Product implements Entity {
     private UUID id;
     private String name;
     private int quantity;
-    private String status;
-    @ManyToOne
+    @Enumerated(value = EnumType.STRING)
+    private ProductStatus status = ProductStatus.UNPURCHASED;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
     private Bill bill;
 

@@ -3,7 +3,8 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.BillService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Bill;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.BillRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.BillResponseDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,23 +16,23 @@ public class BillController {
     private final BillService billService;
 
     @GetMapping
-    public List<Bill> getBillList() {
+    public List<BillResponseDTO> getBillList() {
         return this.billService.list();
     }
 
     @GetMapping("{id}")
-    public Bill getBillById(@PathVariable("id") UUID id) {
+    public BillResponseDTO getBillById(@PathVariable("id") UUID id) {
         return this.billService.getOne(id);
     }
 
     @PostMapping
-    public Bill addBill(@RequestBody Bill bill) {
-        return this.billService.add(bill);
+    public BillResponseDTO addBill(@RequestBody BillRequestDTO billRequestDTO) {
+        return this.billService.add(billRequestDTO);
     }
 
     @PutMapping("{id}")
-    public Bill updateBill(@PathVariable("id") UUID id, @RequestBody Bill bill){
-        return this.billService.update(id, bill);
+    public BillResponseDTO updateBill(@PathVariable("id") UUID id, @RequestBody BillRequestDTO billRequestDTO){
+        return this.billService.update(id, billRequestDTO);
     }
 
     @DeleteMapping("{id}")
