@@ -9,5 +9,6 @@ import java.util.UUID;
 public class InvitationRequestDTO {
     private Timestamp expirationDate;
     private UUID organizationId;
-    private UUID userId;
+    private String userEmail;
+    private String userNumber;
 }

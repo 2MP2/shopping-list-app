@@ -42,6 +42,10 @@ public class User implements SoftDeleteEntity {
     @ToString.Exclude
     @JsonIgnore
     private Set<Invitation> invitations;
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @JsonIgnore
+    private Set<Bill> bills;
 
     @PreRemove
     private void preDelete(){

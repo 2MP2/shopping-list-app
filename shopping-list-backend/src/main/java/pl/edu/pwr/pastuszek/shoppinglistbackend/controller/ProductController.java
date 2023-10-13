@@ -39,4 +39,9 @@ public class ProductController {
     public void deleteProductById(@PathVariable("id") UUID id){
         productService.delete(id);
     }
+
+    @PutMapping("billToProducts")
+    public void addBillToProducts(){
+        //TODO
+    }
 }

@@ -40,4 +40,20 @@ public class UserController {
         userService.delete(id);
     }
 
+    //Probably change UserResponseDTO to new dto in this 3 endpoints
+    @GetMapping("login")
+    public UserResponseDTO login(){
+        return null; //TODO
+    }
+
+    @PostMapping("register")
+    public UserResponseDTO register(){
+        return null; //TODO
+    }
+
+    @GetMapping("info")
+    public UserResponseDTO getFullInfo(){
+        return null; //TODO
+    }
+
 }
