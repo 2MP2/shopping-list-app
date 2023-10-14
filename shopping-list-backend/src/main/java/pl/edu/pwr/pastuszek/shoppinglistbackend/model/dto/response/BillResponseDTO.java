@@ -12,4 +12,5 @@ public class BillResponseDTO {
     private String shop;
     private String comment;
     private List<ProductResponseDTO> products;
+    private UserResponseDTO user;
 }

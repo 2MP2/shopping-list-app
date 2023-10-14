@@ -39,4 +39,9 @@ public class InvitationController {
     public void deleteInvitationById(@PathVariable("id") UUID id){
         invitationService.delete(id);
     }
+
+    @PostMapping("accept/{id}")
+    public void acceptInvitation(@PathVariable("id") UUID id){
+        invitationService.acceptToTrueAndAddUserOrganization(id);
+    }
 }

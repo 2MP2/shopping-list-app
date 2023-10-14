@@ -32,11 +32,22 @@ public class InvitationDTOMapper extends DTOMapper<Invitation, InvitationRequest
                                 "organization with id: " + invitation.getOrganization().getId() + " dose not exists"
                         )));
 
-        invitation.setUser(
-                userRepository.findById(invitation.getUser().getId())
-                        .orElseThrow(()-> new IllegalStateException(
-                                "user with id: " + invitation.getUser().getId() + " dose not exists"
-                        )));
+
+        String number = invitation.getUser().getNumber();
+        if(number!=null){
+            invitation.setUser(
+                    userRepository.findByNumber(number)
+                            .orElseThrow(()-> new IllegalStateException(
+                                    "user with number: " + number + " dose not exists"
+                            )));
+        }else{
+            invitation.setUser(
+                    userRepository.findByEmail(invitation.getUser().getEmail())
+                            .orElseThrow(()-> new IllegalStateException(
+                                    "user with id: " + invitation.getUser().getEmail() + " dose not exists"
+                            )));
+        }
+
 
         return invitation;
     }

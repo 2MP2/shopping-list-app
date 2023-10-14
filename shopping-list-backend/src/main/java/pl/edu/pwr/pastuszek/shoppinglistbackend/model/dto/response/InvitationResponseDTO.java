@@ -7,8 +7,10 @@ import java.util.UUID;
 
 @Data
 public class InvitationResponseDTO {
-    UUID id;
-    Timestamp expirationDate;
-    UUID organizationId;
-    String organizationName;
+    private UUID id;
+    private Timestamp expirationDate;
+    private UUID organizationId;
+    private String organizationName;
+    private String userName;
+    private String userSurname;
 }

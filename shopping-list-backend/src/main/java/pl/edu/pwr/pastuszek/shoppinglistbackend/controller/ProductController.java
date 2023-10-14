@@ -7,6 +7,7 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequest
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -38,5 +39,10 @@ public class ProductController {
     @DeleteMapping("{id}")
     public void deleteProductById(@PathVariable("id") UUID id){
         productService.delete(id);
+    }
+
+    @PutMapping("billToProducts/{billId}")
+    public void addBillToProducts(@PathVariable("billId") UUID billId, @RequestBody Set<UUID> products){
+        this.productService.addBillAndPURCHASEDToProductsByIds(billId, products);
     }
 }

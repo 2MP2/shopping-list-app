@@ -30,6 +30,9 @@ public class Bill implements Entity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User user;
 
     @PreRemove
     private void preRemove(){

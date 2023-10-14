@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserFullResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
 
 import java.util.List;
@@ -38,6 +39,22 @@ public class UserController {
     @DeleteMapping("{id}")
     public void deleteUserById(@PathVariable("id") UUID id){
         userService.delete(id);
+    }
+
+    //Probably change UserResponseDTO to new dto in this 3 endpoints
+    @GetMapping("login")
+    public UserResponseDTO login(){
+        return null; //TODO
+    }
+
+    @PostMapping("register")
+    public UserResponseDTO register(){
+        return null; //TODO
+    }
+
+    @GetMapping("info/{id}")
+    public UserFullResponseDTO getFullInfo(@PathVariable("id") UUID id){
+        return this.userService.getFullUserDto(id);
     }
 
 }
