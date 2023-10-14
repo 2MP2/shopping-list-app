@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.InvitationService;
@@ -26,12 +27,12 @@ public class InvitationController {
     }
 
     @PostMapping
-    public InvitationResponseDTO addInvitation(@RequestBody InvitationRequestDTO invitationRequestDTO) {
+    public InvitationResponseDTO addInvitation(@Valid @RequestBody InvitationRequestDTO invitationRequestDTO) {
         return this.invitationService.add(invitationRequestDTO);
     }
 
     @PutMapping("{id}")
-    public InvitationResponseDTO updateInvitation(@PathVariable("id") UUID id, @RequestBody InvitationRequestDTO invitationRequestDTO){
+    public InvitationResponseDTO updateInvitation(@Valid @PathVariable("id") UUID id, @RequestBody InvitationRequestDTO invitationRequestDTO){
         return this.invitationService.update(id, invitationRequestDTO);
     }
 

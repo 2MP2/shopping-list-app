@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.OrganizationService;
@@ -26,12 +27,12 @@ public class OrganizationController {
     }
 
     @PostMapping
-    public OrganizationResponseDTO addUser(@RequestBody OrganizationRequestDTO organizationRequestDTO) {
+    public OrganizationResponseDTO addUser(@Valid @RequestBody OrganizationRequestDTO organizationRequestDTO) {
         return this.organizationService.add(organizationRequestDTO);
     }
 
     @PutMapping("{id}")
-    public OrganizationResponseDTO updateUser(@PathVariable("id") UUID id, @RequestBody OrganizationRequestDTO organizationRequestDTO){
+    public OrganizationResponseDTO updateUser(@Valid @PathVariable("id") UUID id, @RequestBody OrganizationRequestDTO organizationRequestDTO){
         return this.organizationService.update(id, organizationRequestDTO);
     }
 
