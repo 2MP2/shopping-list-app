@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.BillService;
@@ -26,12 +27,12 @@ public class BillController {
     }
 
     @PostMapping
-    public BillResponseDTO addBill(@RequestBody BillRequestDTO billRequestDTO) {
+    public BillResponseDTO addBill(@Valid @RequestBody BillRequestDTO billRequestDTO) {
         return this.billService.add(billRequestDTO);
     }
 
     @PutMapping("{id}")
-    public BillResponseDTO updateBill(@PathVariable("id") UUID id, @RequestBody BillRequestDTO billRequestDTO){
+    public BillResponseDTO updateBill(@Valid @PathVariable("id") UUID id, @RequestBody BillRequestDTO billRequestDTO){
         return this.billService.update(id, billRequestDTO);
     }
 

@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ShoppingListService;
@@ -26,12 +27,12 @@ public class ShoppingListController {
     }
 
     @PostMapping
-    public ShoppingListResponseDTO addShoppingList(@RequestBody ShoppingListRequestDTO shoppingListRequestDTO) {
+    public ShoppingListResponseDTO addShoppingList(@Valid @RequestBody ShoppingListRequestDTO shoppingListRequestDTO) {
         return this.shoppingListService.add(shoppingListRequestDTO);
     }
 
     @PutMapping("{id}")
-    public ShoppingListResponseDTO updateShoppingList(@PathVariable("id") UUID id, @RequestBody ShoppingListRequestDTO shoppingListRequestDTO){
+    public ShoppingListResponseDTO updateShoppingList(@Valid @PathVariable("id") UUID id, @RequestBody ShoppingListRequestDTO shoppingListRequestDTO){
         return this.shoppingListService.update(id, shoppingListRequestDTO);
     }
 

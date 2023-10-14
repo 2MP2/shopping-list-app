@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
@@ -27,12 +28,12 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponseDTO addUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public UserResponseDTO addUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         return this.userService.add(userRequestDTO);
     }
 
     @PutMapping("{id}")
-    public UserResponseDTO updateUser(@PathVariable("id") UUID id, @RequestBody UserRequestDTO userRequestDTO){
+    public UserResponseDTO updateUser(@Valid @PathVariable("id") UUID id, @RequestBody UserRequestDTO userRequestDTO){
         return this.userService.update(id, userRequestDTO);
     }
 
