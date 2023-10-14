@@ -40,8 +40,8 @@ public class InvitationController {
         invitationService.delete(id);
     }
 
-    @PostMapping(name = "accept", params = "{id}")
+    @PostMapping("accept/{id}")
     public void acceptInvitation(@PathVariable("id") UUID id){
-        //TODO add record in UserOrganization and change accepted to true in invitation
+        invitationService.acceptToTrueAndAddUserOrganization(id);
     }
 }

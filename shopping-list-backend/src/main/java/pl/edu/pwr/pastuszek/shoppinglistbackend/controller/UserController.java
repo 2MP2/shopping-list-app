@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserFullResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
 
 import java.util.List;
@@ -51,9 +52,9 @@ public class UserController {
         return null; //TODO
     }
 
-    @GetMapping("info")
-    public UserResponseDTO getFullInfo(){
-        return null; //TODO
+    @GetMapping("info/{id}")
+    public UserFullResponseDTO getFullInfo(@PathVariable("id") UUID id){
+        return this.userService.getFullUserDto(id);
     }
 
 }

@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Where(clause = "expiration_date < current_timestamp() AND accepted = false")
+@Where(clause = "accepted = false")
 public class Invitation implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

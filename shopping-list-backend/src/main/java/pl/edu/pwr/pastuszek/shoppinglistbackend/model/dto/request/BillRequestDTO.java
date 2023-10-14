@@ -10,5 +10,5 @@ public class BillRequestDTO {
     private String shop;
     private String comment;
     private UUID shoppingListId;
-    private UUID ownerId;
+    private UUID userId;
 }

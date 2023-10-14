@@ -12,5 +12,5 @@ public class BillResponseDTO {
     private String shop;
     private String comment;
     private List<ProductResponseDTO> products;
-    private UserResponseDTO owner;
+    private UserResponseDTO user;
 }
