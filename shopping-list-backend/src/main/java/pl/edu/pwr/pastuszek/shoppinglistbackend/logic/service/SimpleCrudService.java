@@ -2,10 +2,11 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,8 +25,8 @@ public abstract class SimpleCrudService<T extends Entity>
     }
 
     @Override
-    public List<T> list(Map<String, String> params) {
-        return repository.findAll();
+    public Page<T> list(Map<String, String> params, Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override

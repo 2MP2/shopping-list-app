@@ -2,12 +2,13 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ShoppingListService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ShoppingListRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ShoppingListResponseDTO;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,8 +18,8 @@ public class ShoppingListController {
     private final ShoppingListService shoppingListService;
 
     @GetMapping
-    public List<ShoppingListResponseDTO> getShoppingListList() {
-        return this.shoppingListService.list();
+    public Page<ShoppingListResponseDTO> getShoppingListList(Pageable pageable) {
+        return this.shoppingListService.list(pageable);
     }
 
     @GetMapping("{id}")

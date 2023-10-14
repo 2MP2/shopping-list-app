@@ -2,6 +2,9 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper.DTOMapper;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
@@ -30,11 +33,14 @@ public abstract class MappedCrudService<T extends Entity, U, D>
     }
 
     @Override
-    public List<D> list(Map<String, String> params) {
-        return repository.findAll()
-                .stream()
+    public Page<D> list(Map<String, String> params, Pageable pageable) {
+        Page<T> entityPage = repository.findAll(pageable);
+
+        List<D> dtoList = entityPage.getContent().stream()
                 .map(mapper::convertEntityToDTO)
                 .toList();
+
+        return new PageImpl<>(dtoList, pageable, entityPage.getTotalElements());
     }
 
     @Override

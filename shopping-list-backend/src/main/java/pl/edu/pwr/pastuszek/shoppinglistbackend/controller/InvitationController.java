@@ -2,12 +2,13 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.InvitationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.InvitationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.InvitationResponseDTO;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,8 +18,8 @@ public class InvitationController {
     private final InvitationService invitationService;
 
     @GetMapping
-    public List<InvitationResponseDTO> getInvitationList() {
-        return this.invitationService.list();
+    public Page<InvitationResponseDTO> getInvitationList(Pageable pageable) {
+        return this.invitationService.list(pageable);
     }
 
     @GetMapping("{id}")
