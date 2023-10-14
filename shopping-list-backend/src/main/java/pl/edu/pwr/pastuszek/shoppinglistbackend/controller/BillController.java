@@ -2,12 +2,13 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.BillService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.BillRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.BillResponseDTO;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,8 +18,8 @@ public class BillController {
     private final BillService billService;
 
     @GetMapping
-    public List<BillResponseDTO> getBillList() {
-        return this.billService.list();
+    public Page<BillResponseDTO> getBillList(Pageable pageable) {
+        return this.billService.list(pageable);
     }
 
     @GetMapping("{id}")

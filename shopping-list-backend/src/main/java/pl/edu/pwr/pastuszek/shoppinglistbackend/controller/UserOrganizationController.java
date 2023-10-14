@@ -2,12 +2,13 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserOrganizationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserOrganizationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserOrganizationResponseDTO;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,8 +18,8 @@ public class UserOrganizationController {
     private final UserOrganizationService userOrganizationService;
 
     @GetMapping
-    public List<UserOrganizationResponseDTO> getUserOrganizationList() {
-        return this.userOrganizationService.list();
+    public Page<UserOrganizationResponseDTO> getUserOrganizationList(Pageable pageable) {
+        return this.userOrganizationService.list(pageable);
     }
 
     @GetMapping("{id}")
