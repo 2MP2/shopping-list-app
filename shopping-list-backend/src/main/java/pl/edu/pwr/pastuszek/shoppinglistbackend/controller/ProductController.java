@@ -43,7 +43,7 @@ public class ProductController {
         productService.delete(id);
     }
 
-    @PutMapping("billToProducts/{billId}")
+    @PutMapping("bill-to-products/{billId}")
     public void addBillToProducts(@PathVariable("billId") UUID billId, @RequestBody Set<UUID> products){
         this.productService.addBillAndPURCHASEDToProductsByIds(billId, products);
     }

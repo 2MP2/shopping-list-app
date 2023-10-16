@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -7,11 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserFullResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
 import java.util.UUID;
 
+@JsonView(Views.Public.class)
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
@@ -54,9 +56,10 @@ public class UserController {
         return null; //TODO
     }
 
+    @JsonView(Views.Internal.class)
     @GetMapping("info/{id}")
-    public UserFullResponseDTO getFullInfo(@PathVariable("id") UUID id){
-        return this.userService.getFullUserDto(id);
+    public UserResponseDTO getFullInfo(@PathVariable("id") UUID id){
+        return this.userService.getOne(id);
     }
 
 }

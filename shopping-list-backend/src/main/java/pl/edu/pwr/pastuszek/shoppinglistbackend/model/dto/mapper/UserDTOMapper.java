@@ -3,7 +3,6 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserFullResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.User;
 
@@ -26,9 +25,5 @@ public class UserDTOMapper extends DTOMapper<User, UserRequestDTO, UserResponseD
     @Override
     public UserResponseDTO convertEntityToDTO(User entity) {
         return this.modelMapper.map(entity, UserResponseDTO.class);
-    }
-
-    public UserFullResponseDTO convertToFullUserDto(User user){
-        return this.modelMapper.map(user, UserFullResponseDTO.class);
     }
 }
