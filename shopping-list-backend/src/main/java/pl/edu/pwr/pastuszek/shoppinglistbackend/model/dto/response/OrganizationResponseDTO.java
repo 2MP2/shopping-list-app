@@ -9,5 +9,5 @@ import java.util.UUID;
 public class OrganizationResponseDTO {
     private UUID id;
     private String name;
-    private List<ShoppingListResponseDTO> shoppingLists;
+    private List<ShoppingListLightResponseDTO> shoppingLists;
 }
