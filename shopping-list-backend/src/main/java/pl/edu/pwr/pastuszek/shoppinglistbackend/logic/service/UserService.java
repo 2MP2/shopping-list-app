@@ -13,4 +13,5 @@ public class UserService extends MappedCrudService<User, UserRequestDTO, UserRes
     public UserService(UserRepository repository, UserDTOMapper mapper) {
         super(repository, LoggerFactory.getLogger(UserService.class), mapper);
     }
+
 }

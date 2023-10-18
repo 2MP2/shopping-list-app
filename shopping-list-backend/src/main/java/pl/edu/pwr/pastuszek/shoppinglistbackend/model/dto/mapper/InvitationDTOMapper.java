@@ -44,7 +44,7 @@ public class InvitationDTOMapper extends DTOMapper<Invitation, InvitationRequest
             invitation.setUser(
                     userRepository.findByEmail(invitation.getUser().getEmail())
                             .orElseThrow(()-> new IllegalStateException(
-                                    "user with id: " + invitation.getUser().getEmail() + " dose not exists"
+                                    "user with email: " + invitation.getUser().getEmail() + " dose not exists"
                             )));
         }
 

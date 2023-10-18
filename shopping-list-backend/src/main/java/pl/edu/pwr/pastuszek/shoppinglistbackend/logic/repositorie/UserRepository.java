@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface UserRepository extends SoftDeleteRepository<User> {
     Optional<User> findByEmail(String email);
     Optional<User> findByNumber(String number);
+    boolean existsByEmail(String email);
+    boolean existsByNumber(String number);
 }

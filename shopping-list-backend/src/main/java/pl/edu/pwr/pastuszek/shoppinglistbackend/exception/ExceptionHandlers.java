@@ -55,4 +55,13 @@ public class ExceptionHandlers {
         });
         return errors;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(RegistrationException.class)
+    public Map<String, String> handleRegistrationExceptions(RegistrationException e) {
+        logger.error(e.getMessage(), e);
+        Map<String, String> errors = new HashMap<>();
+        errors.put("cause", e.getMessage());
+        return errors;
+    }
 }

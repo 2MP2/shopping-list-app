@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserOrganizationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserOrganizationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserOrganizationResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 
 import java.util.UUID;
 
+@ForAdmin
 @RestController
 @RequestMapping("user-organization")
 @AllArgsConstructor

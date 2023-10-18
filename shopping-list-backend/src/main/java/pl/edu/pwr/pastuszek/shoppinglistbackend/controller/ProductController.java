@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ProductService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLogin;
 
 import java.util.Set;
 import java.util.UUID;
 
+@ForLogin
 @RestController
 @RequestMapping("product")
 @AllArgsConstructor
@@ -29,12 +31,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponseDTO addUser(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO addProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         return this.productService.add(productRequestDTO);
     }
 
     @PutMapping("{id}")
-    public ProductResponseDTO updateUser(@Valid @PathVariable("id") UUID id, @RequestBody ProductRequestDTO productRequestDTO){
+    public ProductResponseDTO updateProduct(@Valid @PathVariable("id") UUID id, @RequestBody ProductRequestDTO productRequestDTO){
         return this.productService.update(id, productRequestDTO);
     }
 

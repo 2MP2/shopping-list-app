@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLogin;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
 import java.util.UUID;
 
+@ForLogin
 @JsonView(Views.Public.class)
 @RestController
 @RequestMapping("user")
@@ -43,17 +45,6 @@ public class UserController {
     @DeleteMapping("{id}")
     public void deleteUserById(@PathVariable("id") UUID id){
         userService.delete(id);
-    }
-
-    //Probably change UserResponseDTO to new dto in this 3 endpoints
-    @GetMapping("login")
-    public UserResponseDTO login(){
-        return null; //TODO
-    }
-
-    @PostMapping("register")
-    public UserResponseDTO register(){
-        return null; //TODO
     }
 
     @JsonView(Views.Internal.class)

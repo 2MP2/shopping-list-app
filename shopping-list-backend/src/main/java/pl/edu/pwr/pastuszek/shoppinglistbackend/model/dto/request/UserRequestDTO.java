@@ -14,9 +14,6 @@ public class UserRequestDTO {
     private String number;
     @Email(message = "Invalid email format")
     private String email;
-    @NotBlank(message = "User login shouldn't be blank")
-    @Size(min = 5, message = "User login should have at least 5 characters")
-    private String login;
     @NotBlank(message = "User password shouldn't be blank")
     @Size(min = 5, message = "User password should have at least 5 characters")
     private String password;

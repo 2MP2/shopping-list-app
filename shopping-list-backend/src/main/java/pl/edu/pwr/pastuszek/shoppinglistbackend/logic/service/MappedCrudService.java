@@ -27,7 +27,7 @@ public abstract class MappedCrudService<T extends Entity, U, D>
 
     protected final DTOMapper<T, U, D> mapper;
 
-    public MappedCrudService(BaseRepository<T> repository, Logger logger, DTOMapper<T, U, D> mapper) {
+    protected MappedCrudService(BaseRepository<T> repository, Logger logger, DTOMapper<T, U, D> mapper) {
         super(repository, logger);
         this.mapper = mapper;
     }

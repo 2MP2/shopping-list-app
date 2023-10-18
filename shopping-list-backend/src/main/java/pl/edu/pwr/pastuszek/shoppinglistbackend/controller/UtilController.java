@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UtilService;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 
 import java.util.Map;
 
+@ForAdmin
 @RestController
 @RequiredArgsConstructor
 public class UtilController {
