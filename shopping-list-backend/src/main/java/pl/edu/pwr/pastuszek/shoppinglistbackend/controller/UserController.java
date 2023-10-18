@@ -15,18 +15,20 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 import java.util.UUID;
 
 @ForLogin
-@JsonView(Views.Public.class)
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
+
+    @JsonView(Views.Public.class)
     @GetMapping
     public Page<UserResponseDTO> getUserList(Pageable pageable) {
         return this.userService.list(pageable);
     }
 
+    @JsonView(Views.Public.class)
     @GetMapping("{id}")
     public UserResponseDTO getUserById(@PathVariable("id") UUID id) {
         return this.userService.getOne(id);
