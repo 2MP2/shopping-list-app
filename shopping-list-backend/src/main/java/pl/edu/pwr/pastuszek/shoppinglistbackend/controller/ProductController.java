@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ProductService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLogin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
 import java.util.Set;
 import java.util.UUID;
 
-@ForLogin
+@ForLoggedIn
 @RestController
 @RequestMapping("product")
 @AllArgsConstructor

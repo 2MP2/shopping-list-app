@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.InvitationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.InvitationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.InvitationResponseDTO;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLogin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
 import java.util.UUID;
 
-@ForLogin
+@ForLoggedIn
 @RestController
 @RequestMapping("invitation")
 @AllArgsConstructor

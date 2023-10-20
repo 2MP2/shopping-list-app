@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @RolesAllowed({"USER", "ADMIN"})
-public @interface ForLogin {
+public @interface ForLoggedIn {
 }

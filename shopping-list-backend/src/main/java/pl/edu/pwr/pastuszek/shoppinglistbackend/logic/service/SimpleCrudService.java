@@ -20,7 +20,7 @@ public abstract class SimpleCrudService<T extends Entity>
         extends AbstractCrudService<T, T, T>
 {
 
-    public SimpleCrudService(BaseRepository<T> repository, Logger logger) {
+    protected SimpleCrudService(BaseRepository<T> repository, Logger logger) {
         super(repository, logger);
     }
 

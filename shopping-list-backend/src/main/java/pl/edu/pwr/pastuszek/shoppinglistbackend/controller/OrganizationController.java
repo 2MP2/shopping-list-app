@@ -9,11 +9,11 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.OrganizationServic
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.OrganizationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.OrganizationResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLogin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
 import java.util.UUID;
 
-@ForLogin
+@ForLoggedIn
 @RestController
 @RequestMapping("organization")
 @AllArgsConstructor
