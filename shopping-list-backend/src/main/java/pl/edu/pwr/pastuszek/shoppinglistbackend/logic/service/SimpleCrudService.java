@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.filter.CreatSpecifications;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
 
 import java.util.Map;
@@ -20,13 +21,13 @@ public abstract class SimpleCrudService<T extends Entity>
         extends AbstractCrudService<T, T, T>
 {
 
-    protected SimpleCrudService(BaseRepository<T> repository, Logger logger) {
-        super(repository, logger);
+    protected SimpleCrudService(BaseRepository<T> repository, Logger logger, CreatSpecifications<T> creatSpecifications) {
+        super(repository, logger, creatSpecifications);
     }
 
     @Override
     public Page<T> list(Map<String, String> params, Pageable pageable) {
-        return repository.findAll(pageable);
+        return repository.findAll(creatSpecifications.creat(params), pageable);
     }
 
     @Override

@@ -11,6 +11,7 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.OrganizationR
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
+import java.util.Map;
 import java.util.UUID;
 
 @ForLoggedIn
@@ -21,8 +22,8 @@ public class OrganizationController {
     private final OrganizationService organizationService;
 
     @GetMapping
-    public Page<OrganizationResponseDTO> getOrganizationList(Pageable pageable) {
-        return this.organizationService.list(pageable);
+    public Page<OrganizationResponseDTO> getOrganizationList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.organizationService.list(params, pageable);
     }
 
     @GetMapping("{id}")

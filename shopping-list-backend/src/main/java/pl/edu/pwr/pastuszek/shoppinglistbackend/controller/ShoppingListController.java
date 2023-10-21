@@ -10,6 +10,7 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ShoppingListRe
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ShoppingListResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
+import java.util.Map;
 import java.util.UUID;
 
 @ForLoggedIn
@@ -20,8 +21,8 @@ public class ShoppingListController {
     private final ShoppingListService shoppingListService;
 
     @GetMapping
-    public Page<ShoppingListResponseDTO> getShoppingListList(Pageable pageable) {
-        return this.shoppingListService.list(pageable);
+    public Page<ShoppingListResponseDTO> getShoppingListList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.shoppingListService.list(params, pageable);
     }
 
     @GetMapping("{id}")

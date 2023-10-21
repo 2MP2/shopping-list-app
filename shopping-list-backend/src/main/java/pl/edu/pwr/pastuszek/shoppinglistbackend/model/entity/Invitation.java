@@ -1,9 +1,7 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.sql.Timestamp;
@@ -17,15 +15,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Where(clause = "accepted = false")
 public class Invitation implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name = "expiration_date")
     private Timestamp expirationDate;
-    @JsonIgnore
-    private boolean accepted = Boolean.FALSE;
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;

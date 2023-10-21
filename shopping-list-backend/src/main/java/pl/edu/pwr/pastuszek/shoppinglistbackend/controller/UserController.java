@@ -12,6 +12,7 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseD
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
+import java.util.Map;
 import java.util.UUID;
 
 @ForLoggedIn
@@ -24,8 +25,8 @@ public class UserController {
 
     @JsonView(Views.Public.class)
     @GetMapping
-    public Page<UserResponseDTO> getUserList(Pageable pageable) {
-        return this.userService.list(pageable);
+    public Page<UserResponseDTO> getUserList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.userService.list(params, pageable);
     }
 
     @JsonView(Views.Public.class)

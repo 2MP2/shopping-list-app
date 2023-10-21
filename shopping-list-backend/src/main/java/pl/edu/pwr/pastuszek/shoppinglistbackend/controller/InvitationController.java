@@ -10,6 +10,7 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.InvitationRequ
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.InvitationResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
+import java.util.Map;
 import java.util.UUID;
 
 @ForLoggedIn
@@ -20,8 +21,8 @@ public class InvitationController {
     private final InvitationService invitationService;
 
     @GetMapping
-    public Page<InvitationResponseDTO> getInvitationList(Pageable pageable) {
-        return this.invitationService.list(pageable);
+    public Page<InvitationResponseDTO> getInvitationList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.invitationService.list(params, pageable);
     }
 
     @GetMapping("{id}")
@@ -46,6 +47,6 @@ public class InvitationController {
 
     @PostMapping("accept/{id}")
     public void acceptInvitation(@PathVariable("id") UUID id){
-        invitationService.acceptToTrueAndAddUserOrganization(id);
+        invitationService.addUserOrganization(id);
     }
 }
