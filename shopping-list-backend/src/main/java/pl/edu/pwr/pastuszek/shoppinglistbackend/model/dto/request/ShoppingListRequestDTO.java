@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 public class ShoppingListRequestDTO {
     @NotBlank(message = "Shopping list name shouldn't be blank")
@@ -14,5 +12,5 @@ public class ShoppingListRequestDTO {
     private String name;
     @NotNull(message = "Organization ID shouldn't be null")
     @org.hibernate.validator.constraints.UUID(message = "Invalid format of organization ID")
-    private UUID organizationId;
+    private String organizationId;
 }

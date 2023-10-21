@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
 public class BillRequestDTO {
     @NotNull(message = "Amount shouldn't be null")
@@ -18,8 +16,8 @@ public class BillRequestDTO {
     private String comment;
     @NotNull(message = "Shopping list ID shouldn't be null")
     @org.hibernate.validator.constraints.UUID(message = "Invalid format of shopping list ID")
-    private UUID shoppingListId;
+    private String shoppingListId;
     @NotNull(message = "User ID shouldn't be null")
     @org.hibernate.validator.constraints.UUID(message = "Invalid format of user ID")
-    private UUID userId;
+    private String userId;
 }
