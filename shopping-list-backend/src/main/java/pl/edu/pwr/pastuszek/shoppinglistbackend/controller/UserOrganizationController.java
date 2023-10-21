@@ -10,6 +10,7 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserOrganizati
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserOrganizationResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 
+import java.util.Map;
 import java.util.UUID;
 
 @ForAdmin
@@ -20,8 +21,8 @@ public class UserOrganizationController {
     private final UserOrganizationService userOrganizationService;
 
     @GetMapping
-    public Page<UserOrganizationResponseDTO> getUserOrganizationList(Pageable pageable) {
-        return this.userOrganizationService.list(pageable);
+    public Page<UserOrganizationResponseDTO> getUserOrganizationList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.userOrganizationService.list(params, pageable);
     }
 
     @GetMapping("{id}")

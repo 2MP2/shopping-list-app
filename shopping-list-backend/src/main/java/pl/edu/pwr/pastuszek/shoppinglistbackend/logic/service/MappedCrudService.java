@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.filter.CreatSpecifications;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper.DTOMapper;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
 
@@ -27,14 +28,14 @@ public abstract class MappedCrudService<T extends Entity, U, D>
 
     protected final DTOMapper<T, U, D> mapper;
 
-    protected MappedCrudService(BaseRepository<T> repository, Logger logger, DTOMapper<T, U, D> mapper) {
-        super(repository, logger);
+    protected MappedCrudService(BaseRepository<T> repository, Logger logger, DTOMapper<T, U, D> mapper, CreatSpecifications<T> creatSpecifications) {
+        super(repository, logger, creatSpecifications);
         this.mapper = mapper;
     }
 
     @Override
     public Page<D> list(Map<String, String> params, Pageable pageable) {
-        Page<T> entityPage = repository.findAll(pageable);
+        Page<T> entityPage = repository.findAll(creatSpecifications.creat(params), pageable);
 
         List<D> dtoList = entityPage.getContent().stream()
                 .map(mapper::convertEntityToDTO)

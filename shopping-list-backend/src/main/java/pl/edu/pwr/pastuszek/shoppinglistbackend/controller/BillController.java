@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,9 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.BillService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.BillRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.BillResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
+import java.util.Map;
 import java.util.UUID;
 
 @ForLoggedIn
@@ -19,11 +22,13 @@ import java.util.UUID;
 public class BillController {
     private final BillService billService;
 
+    @JsonView(Views.Public.class)
     @GetMapping
-    public Page<BillResponseDTO> getBillList(Pageable pageable) {
-        return this.billService.list(pageable);
+    public Page<BillResponseDTO> getBillList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.billService.list(params, pageable);
     }
 
+    @JsonView(Views.Public.class)
     @GetMapping("{id}")
     public BillResponseDTO getBillById(@PathVariable("id") UUID id) {
         return this.billService.getOne(id);

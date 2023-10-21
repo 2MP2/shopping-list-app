@@ -1,4 +1,4 @@
-package pl.edu.pwr.pastuszek.shoppinglistbackend.exception;
+package pl.edu.pwr.pastuszek.shoppinglistbackend.exception.custom;
 
 public class RegistrationException extends RuntimeException {
     public RegistrationException() {

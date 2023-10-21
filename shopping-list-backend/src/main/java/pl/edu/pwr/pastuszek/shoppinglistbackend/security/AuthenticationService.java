@@ -5,7 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.exception.RegistrationException;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.exception.custom.RegistrationException;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.UserRepository;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper.UserDTOMapper;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.AuthenticationRequest;

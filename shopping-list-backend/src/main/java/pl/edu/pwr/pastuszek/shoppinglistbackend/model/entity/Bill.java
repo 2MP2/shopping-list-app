@@ -23,7 +23,7 @@ public class Bill implements Entity {
     private int amount;
     private String shop;
     private String comment;
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
     @ToString.Exclude
     @JsonIgnore
     private Set<Product> products;

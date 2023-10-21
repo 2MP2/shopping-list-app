@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BillRepository;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.ProductRepository;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.filter.ProductSpecifications;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper.ProductDTOMapper;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
@@ -19,8 +20,8 @@ import java.util.UUID;
 public class ProductService extends MappedCrudService<Product, ProductRequestDTO, ProductResponseDTO> {
 
     private final BillRepository billRepository;
-    public ProductService(ProductRepository repository, ProductDTOMapper mapper, BillRepository billRepository) {
-        super(repository, LoggerFactory.getLogger(ProductService.class), mapper);
+    public ProductService(ProductRepository repository, ProductDTOMapper mapper, BillRepository billRepository, ProductSpecifications productSpecifications) {
+        super(repository, LoggerFactory.getLogger(ProductService.class), mapper, productSpecifications);
         this.billRepository = billRepository;
     }
 
