@@ -54,7 +54,6 @@ public abstract class MappedCrudService<T extends Entity, U, D>
 
     @Override
     public D getOne(UUID id) throws RuntimeException {
-        if(!isValidToGetOne(id)) throw new AccessDeniedException("Access denied!");
         var entity = repository
                 .findById(id)
                 .orElseThrow(() -> {
@@ -63,6 +62,7 @@ public abstract class MappedCrudService<T extends Entity, U, D>
                     return e;
                 });
 
+        if(!isValidToGetOne(id)) throw new AccessDeniedException("Access denied!");
         return mapper.convertEntityToDTO(entity);
     }
 
@@ -76,15 +76,15 @@ public abstract class MappedCrudService<T extends Entity, U, D>
 
     @Override
     public D update(UUID id, U u) throws RuntimeException {
-        if(!isValidToUpdate(id, u)) throw new AccessDeniedException("Access denied!");
         if (!repository.existsById(id)) {
             var e = new EntityNotFoundException("Entity of id " + id + " doesn't exist!");
             logger.error(e.getMessage(), e);
             throw e;
         }
-
         var entity = mapper.convertDtoToFullEntity(u);
         entity.setId(id);
+
+        if(!isValidToUpdate(entity, u)) throw new AccessDeniedException("Access denied!");
         return mapper.convertEntityToDTO(repository.save(entity));
     }
 
@@ -97,6 +97,6 @@ public abstract class MappedCrudService<T extends Entity, U, D>
     protected abstract boolean isValidToList(Map<String, String> params, Pageable pageable);
     protected abstract boolean isValidToGetOne(UUID id);
     protected abstract boolean isValidToAdd(U u);
-    protected abstract boolean isValidToUpdate(UUID id, U u);
+    protected abstract boolean isValidToUpdate(T entity, U u);
     protected abstract boolean isValidToDelete(UUID id);
 }

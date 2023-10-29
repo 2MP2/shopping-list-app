@@ -26,26 +26,34 @@ public class UserService extends MappedCrudService<User, UserRequestDTO, UserRes
 
     @Override
     protected boolean isValidToList(Map<String, String> params, Pageable pageable) {
-        return false;
+        if(userAuthentication.isAdmin()) return true;
+        String organizationString = params.get("organization");
+        if(organizationString == null) return false;
+        UUID organizationId = UUID.fromString(organizationString);
+        return userAuthentication.isCurrentUserInOrganization(organizationId);
+
     }
 
     @Override
     protected boolean isValidToGetOne(UUID id) {
-        return false;
+        if(userAuthentication.isAdmin()) return true;
+        return userAuthentication.isCurrentUserInOrganization(id);
     }
 
     @Override
     protected boolean isValidToAdd(UserRequestDTO userRequestDTO) {
-        return false;
+        return userAuthentication.isAdmin();
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, UserRequestDTO userRequestDTO) {
-        return false;
+    protected boolean isValidToUpdate(User entity, UserRequestDTO userRequestDTO) {
+        if(userAuthentication.isAdmin()) return true;
+        if(! userAuthentication.isCurrentUserHaveThisUUID(entity.getId())) return false;
+        return false; //TODO change to true after fix update user
     }
 
     @Override
     protected boolean isValidToDelete(UUID id) {
-        return false;
+        return isValidToGetOne(id);
     }
 }

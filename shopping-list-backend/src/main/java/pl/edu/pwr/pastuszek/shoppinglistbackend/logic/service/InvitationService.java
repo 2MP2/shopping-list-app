@@ -75,7 +75,7 @@ public class InvitationService extends MappedCrudService<Invitation, InvitationR
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, InvitationRequestDTO invitationRequestDTO) {
+    protected boolean isValidToUpdate(Invitation entity, InvitationRequestDTO invitationRequestDTO) {
         return userAuthentication.isAdmin();
     }
 

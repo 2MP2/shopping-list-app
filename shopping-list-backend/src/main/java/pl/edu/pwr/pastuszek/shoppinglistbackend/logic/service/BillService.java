@@ -1,6 +1,5 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -68,21 +67,16 @@ public class BillService extends MappedCrudService<Bill, BillRequestDTO, BillRes
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, BillRequestDTO billRequestDTO) {
+    protected boolean isValidToUpdate(Bill entity, BillRequestDTO billRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-
-        Bill bill = repository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException(
-                "shopping list with id: " + id + " dose not exists"
-        ));
 
         UUID userId = UUID.fromString(billRequestDTO.getUserId());
         UUID shoppingListId = UUID.fromString(billRequestDTO.getShoppingListId());
 
-        if(userId != bill.getUser().getId()) return false;
-        if(shoppingListId != bill.getShoppingList().getId()) return false;
+        if(userId != entity.getUser().getId()) return false;
+        if(shoppingListId != entity.getShoppingList().getId()) return false;
 
-        if(! userAuthentication.isCurrentUserInOrganization(((BillRepository)repository).findOrganizationIdById(id))) return false;
+        if(! userAuthentication.isCurrentUserInOrganization(((BillRepository)repository).findOrganizationIdById(entity.getId()))) return false;
         if(! userAuthentication.isCurrentUserHaveThisUUID(userId)) return false;
         return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId));
     }

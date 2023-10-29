@@ -57,18 +57,13 @@ public class UserOrganizationService extends MappedCrudService<UserOrganization,
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, UserOrganizationRequestDTO userOrganizationRequestDTO) {
+    protected boolean isValidToUpdate(UserOrganization entity, UserOrganizationRequestDTO userOrganizationRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
 
-        UserOrganization userOrganization = repository.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException(
-                        "UserOrganization with id: " + id + " dose not exists"
-                ));
-
         UUID userId = UUID.fromString(userOrganizationRequestDTO.getUserId());
-        if(userId != userOrganization.getUser().getId()) return false;
+        if(userId != entity.getUser().getId()) return false;
         UUID organizationId = UUID.fromString(userOrganizationRequestDTO.getOrganizationId());
-        if(organizationId != userOrganization.getOrganization().getId()) return false;
+        if(organizationId != entity.getOrganization().getId()) return false;
 
         return userAuthentication.isCurrentUserOwnerInOrganization(userId);
     }

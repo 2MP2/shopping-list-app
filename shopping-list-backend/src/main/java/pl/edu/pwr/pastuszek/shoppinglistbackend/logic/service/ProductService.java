@@ -74,20 +74,14 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, ProductRequestDTO productRequestDTO) {
+    protected boolean isValidToUpdate(Product entity, ProductRequestDTO productRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
 
-        Product product = repository.findById(id)
-                .orElseThrow(()->{
-                    var e = new EntityNotFoundException("Bill of id " + id + " not found!");
-                    logger.error(e.getMessage(), e);
-                    return e;
-                });
         UUID shoppingListId = UUID.fromString(productRequestDTO.getShoppingListId());
 
-        if(shoppingListId!= product.getShoppingList().getId()) return false;
+        if(shoppingListId!= entity.getShoppingList().getId()) return false;
 
-        if(! userAuthentication.isCurrentUserOwnerInOrganization(((ProductRepository) repository).findOrganizationIdById(id))) return false;
+        if(! userAuthentication.isCurrentUserOwnerInOrganization(((ProductRepository) repository).findOrganizationIdById(entity.getId()))) return false;
         return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId));
     }
 

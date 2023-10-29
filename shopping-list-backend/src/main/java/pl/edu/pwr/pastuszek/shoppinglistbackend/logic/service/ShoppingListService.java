@@ -63,10 +63,14 @@ public class ShoppingListService extends MappedCrudService<ShoppingList, Shoppin
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, ShoppingListRequestDTO shoppingListRequestDTO) {
+    protected boolean isValidToUpdate(ShoppingList entity, ShoppingListRequestDTO shoppingListRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-        if(!userAuthentication.isCurrentUserInOrganization(((ShoppingListRepository) repository).findOrganizationIdById(id))) return false;
+
         UUID organizationId = UUID.fromString(shoppingListRequestDTO.getOrganizationId());
+
+        if(organizationId != entity.getOrganization().getId()) return false;
+
+        if(!userAuthentication.isCurrentUserInOrganization(((ShoppingListRepository) repository).findOrganizationIdById(entity.getId()))) return false;
         return userAuthentication.isCurrentUserInOrganization(organizationId);
     }
 

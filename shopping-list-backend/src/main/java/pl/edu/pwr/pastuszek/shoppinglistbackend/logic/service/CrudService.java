@@ -15,16 +15,16 @@ import java.util.UUID;
 public interface CrudService<U, D> {
     Page<D> list(Map<String, String> params, Pageable pageable);
 
-    default Page<D> list(Pageable pageable) throws RuntimeException {
+    default Page<D> list(Pageable pageable) {
         return list(Collections.emptyMap(), pageable);
     }
 
-    D getOne(UUID id) throws RuntimeException;
+    D getOne(UUID id);
 
-    D add(U u) throws RuntimeException;
+    D add(U u);
 
-    D update(UUID id, U u) throws RuntimeException;
+    D update(UUID id, U u);
 
-    void delete(UUID id) throws RuntimeException;
+    void delete(UUID id);
 
 }

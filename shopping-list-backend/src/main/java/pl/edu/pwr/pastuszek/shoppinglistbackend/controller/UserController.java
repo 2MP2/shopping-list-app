@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
@@ -35,6 +36,7 @@ public class UserController {
         return this.userService.getOne(id);
     }
 
+    @ForAdmin
     @PostMapping
     public UserResponseDTO addUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         return this.userService.add(userRequestDTO);

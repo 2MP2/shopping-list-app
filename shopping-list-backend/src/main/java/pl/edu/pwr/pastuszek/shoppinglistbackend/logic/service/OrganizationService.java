@@ -69,9 +69,9 @@ public class OrganizationService extends MappedCrudService<Organization, Organiz
     }
 
     @Override
-    protected boolean isValidToUpdate(UUID id, OrganizationRequestDTO organizationRequestDTO) {
+    protected boolean isValidToUpdate(Organization entity, OrganizationRequestDTO organizationRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-        return userAuthentication.isCurrentUserOwnerInOrganization(id);
+        return userAuthentication.isCurrentUserOwnerInOrganization(entity.getId());
     }
 
     @Override
