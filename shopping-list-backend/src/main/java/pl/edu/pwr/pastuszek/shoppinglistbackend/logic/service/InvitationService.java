@@ -59,19 +59,20 @@ public class InvitationService extends MappedCrudService<Invitation, InvitationR
 
     @Override
     protected boolean isValidToAdd(InvitationRequestDTO invitationRequestDTO) {
+        UUID organizationId = UUID.fromString(invitationRequestDTO.getOrganizationId());
         if(invitationRequestDTO.getUserEmail()!=null
                 && (((InvitationRepository)repository)
-                .existsInvitationByUserEmailAndOrgId(invitationRequestDTO.getUserEmail(), invitationRequestDTO.getOrganizationId()))){
+                .existsInvitationByUserEmailAndOrgId(invitationRequestDTO.getUserEmail(), organizationId))){
             throw new InvitationException("Invitation already exist");
         }
         if(invitationRequestDTO.getUserNumber()!=null
                 && (((InvitationRepository)repository)
-                .existsInvitationByUserNumberAndOrgId(invitationRequestDTO.getUserNumber(), invitationRequestDTO.getOrganizationId()))){
+                .existsInvitationByUserNumberAndOrgId(invitationRequestDTO.getUserNumber(), organizationId))){
             throw new InvitationException("Invitation already exist");
         }
 
         if(userAuthentication.isAdmin()) return true;
-        return userAuthentication.isMinAdminInOrganization(invitationRequestDTO.getOrganizationId());
+        return userAuthentication.isMinAdminInOrganization(organizationId);
     }
 
     @Override

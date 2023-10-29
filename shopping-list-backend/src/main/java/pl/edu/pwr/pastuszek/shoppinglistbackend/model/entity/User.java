@@ -20,6 +20,7 @@ import java.util.*;
 @Builder
 @Where(clause = "deleted = false")
 public class User implements SoftDeleteEntity, UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

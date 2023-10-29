@@ -33,7 +33,7 @@ public class ExceptionHandlers {
             }
         }
 
-        logger.error("DataIntegrityViolationException: " + ex.getMessage(), ex);
+        logger.error(ex.getMessage(), ex);
         return new ResponseEntity<>("Data integrity violation", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

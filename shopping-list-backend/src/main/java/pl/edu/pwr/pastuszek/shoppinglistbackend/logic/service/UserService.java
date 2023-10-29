@@ -37,7 +37,7 @@ public class UserService extends MappedCrudService<User, UserRequestDTO, UserRes
     @Override
     protected boolean isValidToGetOne(UUID id) {
         if(userAuthentication.isAdmin()) return true;
-        return userAuthentication.isCurrentUserInOrganization(id);
+        return userAuthentication.isCurrentUserHaveThisUUID(id);
     }
 
     @Override
