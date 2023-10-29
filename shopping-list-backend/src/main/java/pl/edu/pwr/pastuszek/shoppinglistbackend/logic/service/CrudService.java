@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface CrudService<U, D> {
     Page<D> list(Map<String, String> params, Pageable pageable);
 
-    default Page<D> list(Pageable pageable) {
+    default Page<D> list(Pageable pageable) throws RuntimeException {
         return list(Collections.emptyMap(), pageable);
     }
 
@@ -25,6 +25,6 @@ public interface CrudService<U, D> {
 
     D update(UUID id, U u) throws RuntimeException;
 
-    void delete(UUID id);
+    void delete(UUID id) throws RuntimeException;
 
 }

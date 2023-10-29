@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.InvitationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.InvitationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.InvitationResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
 import java.util.Map;
@@ -35,6 +36,7 @@ public class InvitationController {
         return this.invitationService.add(invitationRequestDTO);
     }
 
+    @ForAdmin
     @PutMapping("{id}")
     public InvitationResponseDTO updateInvitation(@Valid @PathVariable("id") UUID id, @RequestBody InvitationRequestDTO invitationRequestDTO){
         return this.invitationService.update(id, invitationRequestDTO);
@@ -46,7 +48,7 @@ public class InvitationController {
     }
 
     @PostMapping("accept/{id}")
-    public void acceptInvitation(@PathVariable("id") UUID id){
-        invitationService.addUserOrganization(id);
+    public void acceptInvitation(@PathVariable("id") UUID id, @RequestParam("isAccepted") boolean isAccepted){
+        invitationService.acceptInvitation(id, isAccepted);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.OrganizationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.OrganizationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.OrganizationResponseDTO;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
 import java.util.Map;
@@ -31,7 +30,6 @@ public class OrganizationController {
         return this.organizationService.getOne(id);
     }
 
-    @ForAdmin
     @PostMapping
     public OrganizationResponseDTO addOrganization(@Valid @RequestBody OrganizationRequestDTO organizationRequestDTO) {
         return this.organizationService.add(organizationRequestDTO);

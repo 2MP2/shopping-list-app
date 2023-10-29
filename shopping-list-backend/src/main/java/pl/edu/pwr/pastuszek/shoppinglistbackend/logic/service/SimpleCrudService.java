@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.filter.CreatSpecifications;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.UserAuthentication;
 
 import java.util.Map;
 import java.util.UUID;
@@ -21,8 +22,12 @@ public abstract class SimpleCrudService<T extends Entity>
         extends AbstractCrudService<T, T, T>
 {
 
-    protected SimpleCrudService(BaseRepository<T> repository, Logger logger, CreatSpecifications<T> creatSpecifications) {
-        super(repository, logger, creatSpecifications);
+    protected SimpleCrudService(BaseRepository<T> repository,
+                                Logger logger,
+                                CreatSpecifications<T> creatSpecifications,
+                                UserAuthentication userAuthentication
+    ) {
+        super(repository, logger, creatSpecifications, userAuthentication);
     }
 
     @Override

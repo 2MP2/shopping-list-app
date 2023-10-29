@@ -10,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.exception.custom.AcceptInvitationException;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.exception.custom.InvitationException;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.exception.custom.RegistrationException;
 
 import java.sql.SQLException;
@@ -20,6 +20,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionHandlers {
     private static final Logger logger = LoggerFactory.getLogger(ExceptionHandlers.class);
+    private static final String ERROR_KEY = "cause";
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         Throwable cause = ex.getRootCause();
@@ -41,7 +42,7 @@ public class ExceptionHandlers {
     public Map<String, String> handleRuntimeExceptions(RuntimeException e) {
         logger.error(e.getMessage(), e);
         Map<String, String> errors = new HashMap<>();
-        errors.put("cause", e.getMessage());
+        errors.put(ERROR_KEY, e.getMessage());
         return errors;
     }
 
@@ -63,16 +64,16 @@ public class ExceptionHandlers {
     public Map<String, String> handleRegistrationExceptions(RegistrationException e) {
         logger.error(e.getMessage(), e);
         Map<String, String> errors = new HashMap<>();
-        errors.put("cause", e.getMessage());
+        errors.put(ERROR_KEY, e.getMessage());
         return errors;
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(AcceptInvitationException.class)
-    public Map<String, String> handleAcceptInvitationExceptions(AcceptInvitationException e) {
+    @ExceptionHandler(InvitationException.class)
+    public Map<String, String> handleAcceptInvitationExceptions(InvitationException e) {
         logger.error(e.getMessage(), e);
         Map<String, String> errors = new HashMap<>();
-        errors.put("cause", e.getMessage());
+        errors.put(ERROR_KEY, e.getMessage());
         return errors;
     }
 }

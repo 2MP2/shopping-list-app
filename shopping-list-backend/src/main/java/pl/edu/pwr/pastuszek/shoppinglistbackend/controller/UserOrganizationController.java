@@ -9,11 +9,12 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserOrganizationSe
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserOrganizationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserOrganizationResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
 import java.util.Map;
 import java.util.UUID;
 
-@ForAdmin
+@ForLoggedIn
 @RestController
 @RequestMapping("user-organization")
 @AllArgsConstructor
@@ -25,11 +26,13 @@ public class UserOrganizationController {
         return this.userOrganizationService.list(params, pageable);
     }
 
+    @ForAdmin
     @GetMapping("{id}")
     public UserOrganizationResponseDTO getUserOrganizationById(@PathVariable("id") UUID id) {
         return this.userOrganizationService.getOne(id);
     }
 
+    @ForAdmin
     @PostMapping
     public UserOrganizationResponseDTO addUserOrganization(@Valid @RequestBody UserOrganizationRequestDTO userOrganizationRequestDTO) {
         return this.userOrganizationService.add(userOrganizationRequestDTO);
