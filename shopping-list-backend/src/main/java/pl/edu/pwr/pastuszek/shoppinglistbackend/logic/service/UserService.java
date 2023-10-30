@@ -47,9 +47,7 @@ public class UserService extends MappedCrudService<User, UserRequestDTO, UserRes
 
     @Override
     protected boolean isValidToUpdate(User entity, UserRequestDTO userRequestDTO) {
-        if(userAuthentication.isAdmin()) return true;
-        if(! userAuthentication.isCurrentUserHaveThisUUID(entity.getId())) return false;
-        return false; //TODO change to true after fix update user
+        return userAuthentication.isAdmin();// update is not available for basic user (temporary)
     }
 
     @Override
