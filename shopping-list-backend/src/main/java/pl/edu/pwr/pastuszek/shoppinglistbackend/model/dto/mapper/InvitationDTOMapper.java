@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.OrganizationRepository;
@@ -28,7 +29,7 @@ public class InvitationDTOMapper extends DTOMapper<Invitation, InvitationRequest
         Invitation invitation = convertDtoToEmptyEntity(dto);
         invitation.setOrganization(
                 organizationRepository.findById(invitation.getOrganization().getId())
-                        .orElseThrow(()-> new IllegalStateException(
+                        .orElseThrow(()-> new EntityNotFoundException(
                                 "organization with id: " + invitation.getOrganization().getId() + " dose not exists"
                         )));
 
@@ -37,14 +38,14 @@ public class InvitationDTOMapper extends DTOMapper<Invitation, InvitationRequest
         if(number!=null){
             invitation.setUser(
                     userRepository.findByNumber(number)
-                            .orElseThrow(()-> new IllegalStateException(
+                            .orElseThrow(()-> new EntityNotFoundException(
                                     "user with number: " + number + " dose not exists"
                             )));
         }else{
             invitation.setUser(
                     userRepository.findByEmail(invitation.getUser().getEmail())
-                            .orElseThrow(()-> new IllegalStateException(
-                                    "user with id: " + invitation.getUser().getEmail() + " dose not exists"
+                            .orElseThrow(()-> new EntityNotFoundException(
+                                    "user with email: " + invitation.getUser().getEmail() + " dose not exists"
                             )));
         }
 

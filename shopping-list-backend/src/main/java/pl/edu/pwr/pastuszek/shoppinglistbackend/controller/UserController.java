@@ -9,27 +9,34 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
+import java.util.Map;
 import java.util.UUID;
 
-@JsonView(Views.Public.class)
+@ForLoggedIn
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
+
+    @JsonView(Views.Public.class)
     @GetMapping
-    public Page<UserResponseDTO> getUserList(Pageable pageable) {
-        return this.userService.list(pageable);
+    public Page<UserResponseDTO> getUserList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.userService.list(params, pageable);
     }
 
+    @JsonView(Views.Public.class)
     @GetMapping("{id}")
     public UserResponseDTO getUserById(@PathVariable("id") UUID id) {
         return this.userService.getOne(id);
     }
 
+    @ForAdmin
     @PostMapping
     public UserResponseDTO addUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         return this.userService.add(userRequestDTO);
@@ -43,17 +50,6 @@ public class UserController {
     @DeleteMapping("{id}")
     public void deleteUserById(@PathVariable("id") UUID id){
         userService.delete(id);
-    }
-
-    //Probably change UserResponseDTO to new dto in this 3 endpoints
-    @GetMapping("login")
-    public UserResponseDTO login(){
-        return null; //TODO
-    }
-
-    @PostMapping("register")
-    public UserResponseDTO register(){
-        return null; //TODO
     }
 
     @JsonView(Views.Internal.class)

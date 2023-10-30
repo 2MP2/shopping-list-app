@@ -5,10 +5,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Table(name = "user", schema = "public", catalog = "shopping_list_db")
 @jakarta.persistence.Entity
@@ -18,7 +19,8 @@ import java.util.UUID;
 @Setter
 @Builder
 @Where(clause = "deleted = false")
-public class User implements SoftDeleteEntity {
+public class User implements SoftDeleteEntity, UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -30,10 +32,11 @@ public class User implements SoftDeleteEntity {
     private String number;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
-    private String login;
     @JsonIgnore
     private String password;
+    @Enumerated(value = EnumType.STRING)
+    @JsonIgnore
+    private Role role = Role.USER;
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     @JsonIgnore
@@ -78,7 +81,36 @@ public class User implements SoftDeleteEntity {
                 "name = " + name + ", " +
                 "surname = " + surname + ", " +
                 "number = " + number + ", " +
-                "email = " + email + ", " +
-                "login = " + login + ")";
+                "email = " + email + ")";
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !deleted;
     }
 }

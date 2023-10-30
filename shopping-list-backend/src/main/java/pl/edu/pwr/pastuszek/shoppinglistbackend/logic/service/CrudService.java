@@ -19,11 +19,11 @@ public interface CrudService<U, D> {
         return list(Collections.emptyMap(), pageable);
     }
 
-    D getOne(UUID id) throws RuntimeException;
+    D getOne(UUID id);
 
-    D add(U u) throws RuntimeException;
+    D add(U u);
 
-    D update(UUID id, U u) throws RuntimeException;
+    D update(UUID id, U u);
 
     void delete(UUID id);
 

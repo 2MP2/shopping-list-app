@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.OrganizationRepository;
@@ -27,7 +28,7 @@ public class ShoppingListDTOMapper extends DTOMapper<ShoppingList, ShoppingListR
 
         shoppingList.setOrganization(
                 organizationRepository.findById(shoppingList.getOrganization().getId())
-                        .orElseThrow(()-> new IllegalStateException(
+                        .orElseThrow(()-> new EntityNotFoundException(
                                 "organization with id: " + shoppingList.getOrganization().getId() + " dose not exists"
                         )));
         return shoppingList;

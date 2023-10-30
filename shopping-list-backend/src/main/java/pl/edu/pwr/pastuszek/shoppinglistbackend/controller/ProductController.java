@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.ProductService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+@ForLoggedIn
 @RestController
 @RequestMapping("product")
 @AllArgsConstructor
@@ -19,8 +22,8 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<ProductResponseDTO> getProductList(Pageable pageable) {
-        return this.productService.list(pageable);
+    public Page<ProductResponseDTO> getProductList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.productService.list(params, pageable);
     }
 
     @GetMapping("{id}")
@@ -29,12 +32,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponseDTO addUser(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
+    public ProductResponseDTO addProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         return this.productService.add(productRequestDTO);
     }
 
     @PutMapping("{id}")
-    public ProductResponseDTO updateUser(@Valid @PathVariable("id") UUID id, @RequestBody ProductRequestDTO productRequestDTO){
+    public ProductResponseDTO updateProduct(@Valid @PathVariable("id") UUID id, @RequestBody ProductRequestDTO productRequestDTO){
         return this.productService.update(id, productRequestDTO);
     }
 

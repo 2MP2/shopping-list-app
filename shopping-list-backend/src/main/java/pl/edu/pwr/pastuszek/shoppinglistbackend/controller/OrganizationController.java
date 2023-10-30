@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.OrganizationService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.OrganizationRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.OrganizationResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
+import java.util.Map;
 import java.util.UUID;
 
+@ForLoggedIn
 @RestController
 @RequestMapping("organization")
 @AllArgsConstructor
@@ -18,8 +21,8 @@ public class OrganizationController {
     private final OrganizationService organizationService;
 
     @GetMapping
-    public Page<OrganizationResponseDTO> getUserList(Pageable pageable) {
-        return this.organizationService.list(pageable);
+    public Page<OrganizationResponseDTO> getOrganizationList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.organizationService.list(params, pageable);
     }
 
     @GetMapping("{id}")
@@ -28,12 +31,12 @@ public class OrganizationController {
     }
 
     @PostMapping
-    public OrganizationResponseDTO addUser(@Valid @RequestBody OrganizationRequestDTO organizationRequestDTO) {
+    public OrganizationResponseDTO addOrganization(@Valid @RequestBody OrganizationRequestDTO organizationRequestDTO) {
         return this.organizationService.add(organizationRequestDTO);
     }
 
     @PutMapping("{id}")
-    public OrganizationResponseDTO updateUser(@Valid @PathVariable("id") UUID id, @RequestBody OrganizationRequestDTO organizationRequestDTO){
+    public OrganizationResponseDTO updateOrganization(@Valid @PathVariable("id") UUID id, @RequestBody OrganizationRequestDTO organizationRequestDTO){
         return this.organizationService.update(id, organizationRequestDTO);
     }
 

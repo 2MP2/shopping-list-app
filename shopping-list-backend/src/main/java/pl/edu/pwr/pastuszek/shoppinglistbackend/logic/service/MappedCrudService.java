@@ -5,9 +5,12 @@ import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.repositorie.BaseRepository;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.filter.CreatSpecifications;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.mapper.DTOMapper;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.UserAuthentication;
 
 import java.util.List;
 import java.util.Map;
@@ -27,14 +30,20 @@ public abstract class MappedCrudService<T extends Entity, U, D>
 
     protected final DTOMapper<T, U, D> mapper;
 
-    public MappedCrudService(BaseRepository<T> repository, Logger logger, DTOMapper<T, U, D> mapper) {
-        super(repository, logger);
+    protected MappedCrudService(BaseRepository<T> repository,
+                                Logger logger,
+                                DTOMapper<T, U, D> mapper,
+                                CreatSpecifications<T> creatSpecifications,
+                                UserAuthentication userAuthentication
+    ) {
+        super(repository, logger, creatSpecifications, userAuthentication);
         this.mapper = mapper;
     }
 
     @Override
-    public Page<D> list(Map<String, String> params, Pageable pageable) {
-        Page<T> entityPage = repository.findAll(pageable);
+    public Page<D> list(Map<String, String> params, Pageable pageable) throws RuntimeException {
+        if(!isValidToList(params, pageable)) throw new AccessDeniedException("Access denied!");
+        Page<T> entityPage = repository.findAll(creatSpecifications.creat(params), pageable);
 
         List<D> dtoList = entityPage.getContent().stream()
                 .map(mapper::convertEntityToDTO)
@@ -53,12 +62,14 @@ public abstract class MappedCrudService<T extends Entity, U, D>
                     return e;
                 });
 
+        if(!isValidToGetOne(id)) throw new AccessDeniedException("Access denied!");
         return mapper.convertEntityToDTO(entity);
     }
 
     @Override
     public D add(U u) throws RuntimeException {
-        var entity = mapper.convertDtoToFullEntity(u); // maybe should change to convertDtoToEmptyEntity
+        if(!isValidToAdd(u)) throw new AccessDeniedException("Access denied!");
+        var entity = mapper.convertDtoToFullEntity(u);
         entity.setId(null);
         return mapper.convertEntityToDTO(repository.save(entity));
     }
@@ -70,14 +81,22 @@ public abstract class MappedCrudService<T extends Entity, U, D>
             logger.error(e.getMessage(), e);
             throw e;
         }
-
         var entity = mapper.convertDtoToFullEntity(u);
         entity.setId(id);
+
+        if(!isValidToUpdate(entity, u)) throw new AccessDeniedException("Access denied!");
         return mapper.convertEntityToDTO(repository.save(entity));
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id) throws RuntimeException{
+        if(!isValidToDelete(id)) throw new AccessDeniedException("Access denied!");
         repository.deleteById(id);
     }
+
+    protected abstract boolean isValidToList(Map<String, String> params, Pageable pageable);
+    protected abstract boolean isValidToGetOne(UUID id);
+    protected abstract boolean isValidToAdd(U u);
+    protected abstract boolean isValidToUpdate(T entity, U u);
+    protected abstract boolean isValidToDelete(UUID id);
 }
