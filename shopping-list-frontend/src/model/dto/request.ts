@@ -1,50 +1,50 @@
-import {ProductStatus, UserOrganizationStatus} from "../status";
+import { ProductStatus, UserOrganizationStatus } from "../status";
 
 export type AuthenticationRequest = {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 };
 
 export type BillRequestDTO = {
-    amount: number;
-    shop: string;
-    comment: string;
-    shoppingListId: string;
-    userId: string;
+  amount: number;
+  shop: string;
+  comment: string;
+  shoppingListId: string;
+  userId: string;
 };
 
 export type InvitationRequestDTO = {
-    organizationId: string;
-    userEmail: string;
-    userNumber: string;
+  organizationId: string;
+  userEmail: string;
+  userNumber: string;
 };
 
 export type OrganizationRequestDTO = {
-    name: string;
+  name: string;
 };
 
 export type ProductRequestDTO = {
-    name: string;
-    quantity: number;
-    status: ProductStatus;
-    shoppingListId: string;
+  name: string;
+  quantity: number;
+  status: ProductStatus;
+  shoppingListId: string;
 };
 
 export type ShoppingListRequestDTO = {
-    name: string;
-    organizationId: string;
+  name: string;
+  organizationId: string;
 };
 
 export type UserOrganizationRequestDTO = {
-    status: UserOrganizationStatus;
-    userId: string;
-    organizationId: string;
+  status: UserOrganizationStatus;
+  userId: string;
+  organizationId: string;
 };
 
 export type UserRequestDTO = {
-    name: string;
-    surname: string;
-    number: string;
-    email: string;
-    password: string;
+  name: string;
+  surname: string;
+  number: string;
+  email: string;
+  password: string;
 };
