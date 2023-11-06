@@ -3,7 +3,6 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Filter;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -22,9 +21,8 @@ public class ShoppingList implements Entity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
-    @Filter(name="deleted",condition="deleted IS FALSE")
     private Organization organization;
     @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.REMOVE)
     @ToString.Exclude
