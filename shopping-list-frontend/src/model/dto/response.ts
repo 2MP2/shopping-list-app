@@ -24,7 +24,6 @@ export type InvitationResponseDTO = {
 export type OrganizationResponseDTO = {
   id: string;
   name: string;
-  shoppingLists: ShoppingListLightResponseDTO[];
 };
 
 export type ProductResponseDTO = {

@@ -10,20 +10,20 @@ export async function login(
     userData,
   );
   const authToken = response.data.token;
-  updateAuthToken(authToken);
+  await updateAuthToken(authToken);
 
   return response.data;
 }
 
-export const register = async (
+export async function register(
   userData: UserRequestDTO,
-): Promise<AuthenticationResponse> => {
+): Promise<AuthenticationResponse> {
   const response = await axiosInstance.post<AuthenticationResponse>(
     "/authentication/register",
     userData,
   );
   const authToken = response.data.token;
-  updateAuthToken(authToken);
+  await updateAuthToken(authToken);
 
   return response.data;
-};
+}
