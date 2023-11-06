@@ -54,7 +54,7 @@ public class OrganizationService extends MappedCrudService<Organization, Organiz
             UUID userId = UUID.fromString(userString);
             return userAuthentication.isCurrentUserHaveThisUUID(userId);
         }
-        return true;
+        return false;
     }
 
     @Override
