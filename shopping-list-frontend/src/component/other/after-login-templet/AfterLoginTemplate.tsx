@@ -17,10 +17,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
 import {OrganizationResponseDTO} from "../../../model/dto/response";
-import {useEffect, useState} from "react";
-import {getOrganizationList} from "../../../service/organization";
+import {ReactNode, useEffect, useState} from "react";
+import {addOrganization, getOrganizationList} from "../../../service/organization";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {logout} from "../../../service/authentication";
+import {useNavigate} from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import {Badge} from "@mui/material";
+import {countUserInvitation} from "../../../service/invitation";
 
 
 const drawerWidth = 240;
@@ -34,6 +39,7 @@ const Main = styled('main', {shouldForwardProp: (prop) => prop !== 'open'})<{
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
     }),
+    marginTop: 32,
     marginLeft: `-${drawerWidth}px`,
     ...(open && {
         transition: theme.transitions.create('margin', {
@@ -74,19 +80,78 @@ const DrawerHeader = styled('div')(({theme}) => ({
     justifyContent: 'flex-end',
 }));
 
-function AfterLoginTemplate() {
+type AfterLoginTemplateProps = {
+    children: ReactNode;
+};
+
+function AfterLoginTemplate({children}: AfterLoginTemplateProps) {
+    const navigate = useNavigate();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [organizations, setOrganizations] = useState<OrganizationResponseDTO[]>([]);
+    const [isAddingOrganization, setIsAddingOrganization] = React.useState(false);
+    const [newOrganization, setNewOrganization] = React.useState<string>('');
+    const [invitationCount, setInvitationCount] = useState<Number>(0);
+
+
+    const handleAddOrganizationClick = () => {
+        setIsAddingOrganization(true);
+    };
+
+    const handleSaveOrganization = async () => {
+        if (newOrganization) {
+            setIsAddingOrganization(false);
+            try {
+                const res = await addOrganization({name: newOrganization});
+                navigate(`/organization/${res.id}`);
+                setNewOrganization("")
+
+                const id = sessionStorage.getItem('id') || ""
+                getOrganizationList({ user: id })
+                    .then((response) => {
+                        setOrganizations(response.content);
+                    })
+                    .catch((error) => {
+                        toast.error("Couldn't load your organizations");
+                    });
+
+            }catch (error){
+                toast.error("Couldn't add new organization");
+            }
+        }
+    };
+
+    const handleCancel = () => {
+        setNewOrganization('');
+        setIsAddingOrganization(false);
+    };
+
 
     useEffect(() => {
-        getOrganizationList({})
+        const id = sessionStorage.getItem('id') || ""
+        getOrganizationList({user: id })
             .then((response) => {
                 setOrganizations(response.content);
             })
             .catch((error) => {
                 toast.error("Couldn't load your organization");
             });
+
+        if (id) {
+            const fetchInvitationCount = () => {
+                countUserInvitation(id)
+                    .then((count) => {
+                        setInvitationCount(count);
+                    })
+                    .catch((error) => {
+                        console.error("Couldn't load invitation");
+                    });
+            };
+            fetchInvitationCount();
+            const interval = setInterval(fetchInvitationCount, 30000);
+            return () => clearInterval(interval);
+        }
+
     }, []);
 
     const handleDrawerOpen = () => {
@@ -112,10 +177,15 @@ function AfterLoginTemplate() {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
-                        Persistent drawer
+                        Shopping List App
                     </Typography>
-                    <Button color="inherit" sx={{ marginLeft: 'auto' }}>User</Button>
-                    <Button color="inherit" >Logout</Button>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Badge badgeContent={invitationCount.toString()} color="secondary" max={9}>
+                        <Button color="inherit" href="/user-edit">User</Button>
+                    </Badge>
+                    <Button color="inherit" onClick={logout} href="/">
+                        Logout
+                    </Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -137,20 +207,32 @@ function AfterLoginTemplate() {
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <Button color="inherit" >CRATE ORGANIZATION</Button>
+                {isAddingOrganization ? (
+                    <div>
+                        <TextField
+                            label="New shopping list"
+                            value={newOrganization}
+                            onChange={(e) => setNewOrganization(e.target.value)}
+                        />
+                        <Button onClick={handleSaveOrganization}>Save</Button>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                    </div>
+                ) : (
+                    <Button color="inherit" onClick={handleAddOrganizationClick}>CRATE ORGANIZATION</Button>
+                )}
                 <Divider />
                 <List>
                     {organizations.map((org) => (
                         <ListItem key={org.id} disablePadding>
                             <ListItemButton href={`/organization/${org.id}`}>
-                                <ListItemText primary={org.name} />
+                                <ListItemText primary={org.name.length > 18 ? org.name.slice(0, 16) + '...' : org.name} />
                             </ListItemButton>
                         </ListItem>
                     ))}
                 </List>
             </Drawer>
             <Main open={open}>
-                //tu jest środek
+                {children}
             </Main>
             <ToastContainer />
         </Box>
