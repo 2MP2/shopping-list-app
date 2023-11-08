@@ -1,4 +1,4 @@
-import { ProductStatus, UserOrganizationStatus } from "../status";
+import { UserOrganizationStatus } from "../status";
 
 export type AuthenticationRequest = {
   email: string;
@@ -26,7 +26,7 @@ export type OrganizationRequestDTO = {
 export type ProductRequestDTO = {
   name: string;
   quantity: number;
-  status: ProductStatus;
+  isBought: boolean;
   shoppingListId: string;
 };
 

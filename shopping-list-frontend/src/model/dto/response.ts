@@ -1,4 +1,4 @@
-import { ProductStatus } from "../status";
+import {UserOrganizationStatus} from "../status";
 
 export type AuthenticationResponse = {
   token: string;
@@ -30,22 +30,17 @@ export type ProductResponseDTO = {
   id: string;
   name: string;
   quantity: number;
-  status: ProductStatus;
-};
-
-export type ShoppingListLightResponseDTO = {
-  id: string;
-  name: string;
+  isBought: boolean;
 };
 
 export type ShoppingListResponseDTO = {
   id: string;
   name: string;
-  products: ProductResponseDTO[];
 };
 
 export type UserOrganizationResponseDTO = {
   id: string;
+  status: UserOrganizationStatus;
   user: UserResponseDTO;
   organizationId: string;
   organizationName: string;

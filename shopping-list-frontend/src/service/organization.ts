@@ -3,7 +3,7 @@ import { axiosInstance } from "./axios";
 import { OrganizationRequestDTO } from "../model/dto/request";
 
 export async function getOrganizationList(
-  params: any,
+  params: Record<string, string>,
 ): Promise<Page<OrganizationResponseDTO>> {
   const response = await axiosInstance.get<Page<OrganizationResponseDTO>>(
     "/organization",

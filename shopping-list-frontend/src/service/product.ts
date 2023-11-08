@@ -3,7 +3,7 @@ import { axiosInstance } from "./axios";
 import { ProductRequestDTO } from "../model/dto/request";
 
 export async function getProductList(
-  params: any,
+  params: Record<string, string>,
 ): Promise<Page<ProductResponseDTO>> {
   const response = await axiosInstance.get<Page<ProductResponseDTO>>(
     "/product",
