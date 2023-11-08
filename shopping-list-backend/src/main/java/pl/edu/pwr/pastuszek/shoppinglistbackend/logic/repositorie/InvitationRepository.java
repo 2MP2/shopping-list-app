@@ -27,4 +27,6 @@ public interface InvitationRepository extends BaseRepository<Invitation> {
 
     @Query("SELECT i.organization.id FROM Invitation i WHERE i.id = :invitationId")
     UUID findOrganizationIdById(@Param("invitationId") UUID invitationId);
+
+    long countByUser_Id(UUID userId);
 }

@@ -117,4 +117,14 @@ public class InvitationService extends MappedCrudService<Invitation, InvitationR
         if(userAuthentication.isAdmin()) return true;
         return userAuthentication.isCurrentUserHaveThisUUID(invitation.getUser().getId());
     }
+
+    public long countInvitationForUser(UUID id){
+        if(!isValidToCountInvitationForUser(id)) throw new AccessDeniedException("Access denied!");
+        return ((InvitationRepository)repository).countByUser_Id(id);
+    }
+
+    protected boolean isValidToCountInvitationForUser(UUID id){
+        if(userAuthentication.isAdmin()) return true;
+        return userAuthentication.isCurrentUserHaveThisUUID(id);
+    }
 }

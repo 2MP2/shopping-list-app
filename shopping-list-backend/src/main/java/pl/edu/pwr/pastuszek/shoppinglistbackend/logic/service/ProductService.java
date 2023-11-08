@@ -14,7 +14,6 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequest
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Bill;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Product;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.ProductStatus;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.UserAuthentication;
 
 import java.util.Map;
@@ -104,7 +103,7 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
                 .filter( product -> product.getShoppingList().getId().equals(bill.getShoppingList().getId()))
                 .forEach(product -> {
                     product.setBill(bill);
-                    product.setStatus(ProductStatus.PURCHASED);
+                    product.setBought(Boolean.TRUE);
                 });
     }
 

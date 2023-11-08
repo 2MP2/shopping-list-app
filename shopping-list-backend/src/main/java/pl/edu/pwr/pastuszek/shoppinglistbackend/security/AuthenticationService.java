@@ -51,7 +51,7 @@ public class AuthenticationService {
                 .orElseThrow(()-> new IllegalStateException(
                         "user with id: " + authenticationRequest.getEmail() + " dose not exists"
                 ));
-        String token = jwtService.generateToken(Map.of("role", user.getRole()), user);
+        String token = jwtService.generateToken(Map.of("id", user.getId()), user);
         return new AuthenticationResponse(token);
     }
 }

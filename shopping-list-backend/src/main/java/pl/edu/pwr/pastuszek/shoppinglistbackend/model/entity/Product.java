@@ -20,8 +20,7 @@ public class Product implements Entity {
     private UUID id;
     private String name;
     private int quantity;
-    @Enumerated(value = EnumType.STRING)
-    private ProductStatus status = ProductStatus.UNPURCHASED;
+    private boolean isBought = Boolean.FALSE;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
@@ -51,7 +50,7 @@ public class Product implements Entity {
                 "id = " + id + ", " +
                 "name = " + name + ", " +
                 "quantity = " + quantity + ", " +
-                "status = " + status + ", " +
+                "status = " + isBought + ", " +
                 "shoppingList = " + shoppingList + ", " +
                 "bill = " + bill + ")";
     }

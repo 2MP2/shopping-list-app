@@ -37,7 +37,7 @@ public class OrganizationService extends MappedCrudService<Organization, Organiz
         userOrganizationRepository.save(
                 UserOrganization
                         .builder()
-                        .status(UserOrganizationStatus.USER)
+                        .status(UserOrganizationStatus.OWNER)
                         .user(userAuthentication.getAuthenticationInfo())
                         .organization(Organization.builder().id(organizationResponseDTO.getId()).build())
                         .build()

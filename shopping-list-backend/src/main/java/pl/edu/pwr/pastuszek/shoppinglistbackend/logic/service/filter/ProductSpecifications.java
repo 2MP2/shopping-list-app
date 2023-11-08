@@ -5,7 +5,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Bill;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Product;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.ProductStatus;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.ShoppingList;
 
 import java.util.Map;
@@ -17,7 +16,7 @@ public class ProductSpecifications implements CreatSpecifications<Product> {
     public Specification<Product> creat(Map<String, String> params) {
         Specification<Product> spec = Specification.where(null);
         if(params.get("status")!=null)
-            spec = spec.and(ProductSpecifications.withProductStatus(params.get("status")));
+            spec = spec.and(ProductSpecifications.withIsBought(Boolean.parseBoolean(params.get("isBought"))));
         if(params.get("shoppingList")!=null)
             spec = spec.and(ProductSpecifications.withShoppingListId(params.get("shoppingList")));
         if(params.get("bill")!=null)
@@ -25,13 +24,8 @@ public class ProductSpecifications implements CreatSpecifications<Product> {
         return spec;
     }
 
-    public static Specification<Product> withProductStatus(String status) {
-        ProductStatus productStatus = switch (status.toUpperCase()) {
-            case "PURCHASED" -> ProductStatus.PURCHASED;
-            case "UNPURCHASED" ->ProductStatus.UNPURCHASED;
-            default -> null;
-        };
-        return (root, query, builder) -> builder.equal(root.get("status"), productStatus);
+    public static Specification<Product> withIsBought(boolean isBought) {
+        return (root, query, builder) -> builder.equal(root.get("status"), isBought);
     }
 
     public static Specification<Product> withShoppingListId(String shoppingListId) {

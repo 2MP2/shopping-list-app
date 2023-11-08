@@ -18,11 +18,10 @@ create table "user"
 
 create table organization
 (
-    id      uuid    not null
+    id   uuid    not null
         constraint organization_pk
             primary key,
-    name    varchar not null,
-    deleted boolean not null
+    name varchar not null
 );
 
 create table shopping_list
@@ -59,14 +58,11 @@ create table product
             primary key,
     name             varchar not null,
     quantity         integer not null,
-    status           varchar not null
-        constraint status_check
-            check ((status)::text = ANY
-                   ((ARRAY ['UNPURCHASED'::character varying, 'PURCHASED'::character varying])::text[])),
     shopping_list_id uuid    not null,
     bill_id          uuid
         constraint product_bill_id_fk
-            references bill
+            references bill,
+    is_bought        boolean
 );
 
 create table user_organization
@@ -77,7 +73,7 @@ create table user_organization
     status          varchar not null
         constraint status_check
             check ((status)::text = ANY
-                   ((ARRAY ['OWNER'::character varying, 'ADMIN'::character varying, 'USER'::character varying])::text[])),
+                   (ARRAY [('OWNER'::character varying)::text, ('ADMIN'::character varying)::text, ('USER'::character varying)::text])),
     organization_id uuid    not null
         constraint user_organization_organization_uuid_fk
             references organization,
