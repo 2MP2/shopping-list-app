@@ -18,11 +18,5 @@ public interface UserOrganizationRepository extends SoftDeleteRepository<UserOrg
             @Param("orgId") UUID orgId
     );
 
-    @Query("SELECT uo " +
-            "FROM UserOrganization uo " +
-            "WHERE uo.user.id = :userId AND uo.organization.id = :orgId")
-    Optional<UserOrganization> findUserOrganizationByUserIdAndOrgId(
-            @Param("userId") UUID userId,
-            @Param("orgId") UUID orgId
-    );
+    Optional<UserOrganization> findByUserIdAndOrganizationId(UUID user_id, UUID organization_id);
 }

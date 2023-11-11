@@ -61,11 +61,11 @@ public class UserOrganizationService extends MappedCrudService<UserOrganization,
         if(userAuthentication.isAdmin()) return true;
 
         UUID userId = UUID.fromString(userOrganizationRequestDTO.getUserId());
-        if(userId != entity.getUser().getId()) return false;
+        if(!userId.equals(entity.getUser().getId())) return false;
         UUID organizationId = UUID.fromString(userOrganizationRequestDTO.getOrganizationId());
-        if(organizationId != entity.getOrganization().getId()) return false;
+        if(!organizationId.equals(entity.getOrganization().getId())) return false;
 
-        return userAuthentication.isCurrentUserOwnerInOrganization(userId);
+        return userAuthentication.isCurrentUserOwnerInOrganization(organizationId);
     }
 
     @Override
@@ -75,6 +75,8 @@ public class UserOrganizationService extends MappedCrudService<UserOrganization,
                 .orElseThrow(()-> new EntityNotFoundException(
                 "UserOrganization with id: " + id + " dose not exists"
         ));
+
+        System.out.println(userOrganization);
 
         if(userAuthentication.isCurrentUserOwnerInOrganization(userOrganization.getOrganization().getId())) return true;
         return userAuthentication.isCurrentUserHaveThisUUID(userOrganization.getUser().getId());

@@ -62,25 +62,21 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
     @Override
     protected boolean isValidToGetOne(UUID id) {
         if(userAuthentication.isAdmin()) return true;
-        return userAuthentication.isCurrentUserOwnerInOrganization(((ProductRepository) repository).findOrganizationIdById(id));
+        return userAuthentication.isCurrentUserInOrganization(((ProductRepository) repository).findOrganizationIdById(id));
     }
 
     @Override
     protected boolean isValidToAdd(ProductRequestDTO productRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-        UUID organizationId = UUID.fromString(productRequestDTO.getShoppingListId());
-        return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(organizationId));
+        UUID shoppingListId = UUID.fromString(productRequestDTO.getShoppingListId());
+        return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId));
     }
 
     @Override
     protected boolean isValidToUpdate(Product entity, ProductRequestDTO productRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-
         UUID shoppingListId = UUID.fromString(productRequestDTO.getShoppingListId());
-
-        if(shoppingListId!= entity.getShoppingList().getId()) return false;
-
-        if(! userAuthentication.isCurrentUserOwnerInOrganization(((ProductRepository) repository).findOrganizationIdById(entity.getId()))) return false;
+        if(!shoppingListId.equals(entity.getShoppingList().getId())) return false;
         return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId));
     }
 
@@ -103,7 +99,7 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
                 .filter( product -> product.getShoppingList().getId().equals(bill.getShoppingList().getId()))
                 .forEach(product -> {
                     product.setBill(bill);
-                    product.setBought(Boolean.TRUE);
+                    product.setPurchased(Boolean.TRUE);
                 });
     }
 

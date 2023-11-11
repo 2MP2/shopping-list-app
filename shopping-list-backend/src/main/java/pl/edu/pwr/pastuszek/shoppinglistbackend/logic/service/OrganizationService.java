@@ -79,4 +79,12 @@ public class OrganizationService extends MappedCrudService<Organization, Organiz
         if(userAuthentication.isAdmin()) return true;
         return userAuthentication.isCurrentUserOwnerInOrganization(id);
     }
+
+    public boolean isCurrentUserOwner(UUID organizationId){
+        return userAuthentication.isCurrentUserOwnerInOrganization(organizationId);
+    }
+
+    public boolean isCurrentUserAdminOrOwner(UUID organizationId){
+        return userAuthentication.isMinAdminInOrganization(organizationId);
+    }
 }

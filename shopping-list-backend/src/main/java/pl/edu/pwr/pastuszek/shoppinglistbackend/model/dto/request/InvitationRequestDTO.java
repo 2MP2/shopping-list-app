@@ -1,8 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -11,7 +9,4 @@ public class InvitationRequestDTO {
     private String organizationId;
     @Email(message = "Invalid email format")
     private String userEmail;
-    @NotNull(message = "User number shouldn,t be null")
-    @Pattern(regexp = "^\\d{9}$", message = "User phone number wrong pattern")
-    private String userNumber;
 }

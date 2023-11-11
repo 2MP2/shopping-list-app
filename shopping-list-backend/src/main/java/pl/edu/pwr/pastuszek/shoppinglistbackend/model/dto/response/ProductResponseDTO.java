@@ -9,5 +9,6 @@ public class ProductResponseDTO {
     private UUID id;
     private String name;
     private int quantity;
-    private boolean isBought;
+    private boolean purchased;
+    private UUID billId;
 }

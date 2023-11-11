@@ -73,8 +73,8 @@ public class BillService extends MappedCrudService<Bill, BillRequestDTO, BillRes
         UUID userId = UUID.fromString(billRequestDTO.getUserId());
         UUID shoppingListId = UUID.fromString(billRequestDTO.getShoppingListId());
 
-        if(userId != entity.getUser().getId()) return false;
-        if(shoppingListId != entity.getShoppingList().getId()) return false;
+        if(!userId.equals(entity.getUser().getId())) return false;
+        if(!shoppingListId.equals(entity.getShoppingList().getId())) return false;
 
         if(! userAuthentication.isCurrentUserInOrganization(((BillRepository)repository).findOrganizationIdById(entity.getId()))) return false;
         if(! userAuthentication.isCurrentUserHaveThisUUID(userId)) return false;
