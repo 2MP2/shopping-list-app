@@ -4,7 +4,6 @@ import SignIn from "./page/sing-in/SignIn";
 import SignUp from "./page/sing-up/SignUp";
 import OrganizationDetails from "./page/orgnization-details/OrganizationDetails";
 import OrganizationSide from "./page/orgniaztion-side/OrganizationSide";
-import ShoppingListSide from "./page/shopping-list-side/ShoppingListSide";
 import UserEdit from "./page/user-edit/UserEdit";
 import CreateBill from "./page/creat-bill/CreatBill";
 import PrivateRoute from "./component/other/PrivateRoute";
@@ -22,7 +21,6 @@ function App() {
                       <Route path=":id" element={<OrganizationSide />} />
                       <Route path="details/:id" element={<OrganizationDetails />} />
                   </Route>
-                  <Route path="/shopping-list/:id" element={<ShoppingListSide />} />
                   <Route path="/user-edit" element={<UserEdit />} />
                   <Route path="/bill-create" element={<CreateBill />} />
               </Route>
