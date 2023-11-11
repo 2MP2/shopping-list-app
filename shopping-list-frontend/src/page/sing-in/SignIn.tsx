@@ -1,4 +1,3 @@
-import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,10 +15,11 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Copyright from "../../component/other/Copyright";
+import {FormEvent} from "react";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
@@ -48,8 +48,8 @@ export default function SignIn() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <img src={process.env.PUBLIC_URL + '/Shopping_List_Logo_48.png'} alt="Avatar" />
         </Avatar>
         <Typography component="h1" variant="h5">
           Sign in

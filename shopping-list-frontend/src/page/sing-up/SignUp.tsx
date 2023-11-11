@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,7 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from "../../component/other/Copyright";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {register} from "../../service/authentication";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,7 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function SignUp() {
   const [isSubmitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -59,7 +58,7 @@ export default function SignUp() {
                 }}
             >
                 <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                    <LockOutlinedIcon />
+                    <img src={process.env.PUBLIC_URL + '/Shopping_List_Logo_48.png'} alt="Avatar" />
                 </Avatar>
                 <Typography component="h1" variant="h5">
                     Sign up
@@ -116,12 +115,6 @@ export default function SignUp() {
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
                             />
                         </Grid>
                     </Grid>
