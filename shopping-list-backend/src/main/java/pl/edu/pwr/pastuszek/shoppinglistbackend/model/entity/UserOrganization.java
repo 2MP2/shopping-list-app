@@ -1,11 +1,7 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -18,20 +14,16 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Where(clause = "deleted = false")
-public class UserOrganization implements SoftDeleteEntity {
+public class UserOrganization implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @JsonIgnore
-    private boolean deleted = Boolean.FALSE;
     @Enumerated(value = EnumType.STRING)
     private UserOrganizationStatus status;
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
 

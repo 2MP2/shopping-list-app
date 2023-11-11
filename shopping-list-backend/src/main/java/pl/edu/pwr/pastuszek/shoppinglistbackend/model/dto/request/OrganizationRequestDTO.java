@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class OrganizationRequestDTO {
     @NotBlank(message = "Organization name shouldn't be blank")
-    @Size(min = 3, max = 255, message = "Wrong Organization name")
+    @Size(min = 3, max = 64, message = "Wrong Organization name")
     private String name;
 }

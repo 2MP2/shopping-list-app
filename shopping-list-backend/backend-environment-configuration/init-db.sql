@@ -10,7 +10,6 @@ create table "user"
     email    varchar not null
         unique,
     password varchar not null,
-    deleted  boolean not null,
     role     varchar not null
         constraint check_name
             check ((role)::text = ANY (ARRAY [('USER'::character varying)::text, ('ADMIN'::character varying)::text]))
@@ -62,7 +61,7 @@ create table product
     bill_id          uuid
         constraint product_bill_id_fk
             references bill,
-    is_bought        boolean
+    purchased        boolean
 );
 
 create table user_organization
@@ -80,7 +79,6 @@ create table user_organization
     id              uuid    not null
         constraint user_organization_pk
             primary key,
-    deleted         boolean,
     constraint user_organization_pk2
         unique (status, organization_id, user_id)
 );

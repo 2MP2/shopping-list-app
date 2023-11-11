@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface UserOrganizationRepository extends SoftDeleteRepository<UserOrganization> {
+public interface UserOrganizationRepository extends BaseRepository<UserOrganization> {
     @Query("SELECT CASE WHEN COUNT(uo) > 0 THEN TRUE ELSE FALSE END " +
             "FROM UserOrganization uo " +
             "WHERE uo.user.id = :userId AND uo.organization.id = :orgId")

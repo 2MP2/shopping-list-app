@@ -37,7 +37,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User newUser = userDTOMapper.convertDtoToFullEntity(user);
         userRepository.save(newUser);
-        var jwt = jwtService.generateToken(newUser);
+        var jwt = jwtService.generateToken(Map.of("id", newUser.getId()), newUser);
         return new AuthenticationResponse(jwt);
     }
 

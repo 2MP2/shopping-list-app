@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ProductRequestDTO {
     @NotBlank(message = "Product name shouldn't be blank")
-    @Size(max = 255, message = "Product name is too long")
+    @Size(max = 128, message = "Product name is too long")
     private String name;
     @Min(value = 0, message = "Quantity must be at least 0")
     private int quantity;

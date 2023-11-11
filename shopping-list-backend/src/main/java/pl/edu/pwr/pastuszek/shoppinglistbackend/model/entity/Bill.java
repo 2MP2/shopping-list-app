@@ -23,14 +23,14 @@ public class Bill implements Entity {
     private int amount;
     private String shop;
     private String comment;
-    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
     private Set<Product> products;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private User user;
 
