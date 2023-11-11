@@ -1,9 +1,10 @@
 import React from 'react';
+import TransferProductList from "./TransferProductList";
 
 function CreateBill() {
     return (
         <div>
-            <h1>Create Bill</h1>
+            <TransferProductList/>
         </div>
     );
 }

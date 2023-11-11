@@ -1,8 +1,7 @@
-import React from "react";
 import {Navigate, Outlet} from "react-router-dom";
 import AfterLoginTemplate from "./after-login-templet/AfterLoginTemplate";
 
-const PrivateRoute = () => {
+export default function PrivateRoute () {
   return sessionStorage.getItem("id") ? (
           <AfterLoginTemplate>
             <Outlet />
@@ -11,5 +10,3 @@ const PrivateRoute = () => {
     <Navigate to="/sing-in" />
   );
 };
-
-export default PrivateRoute;
