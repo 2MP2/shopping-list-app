@@ -16,7 +16,6 @@ export type BillRequestDTO = {
 export type InvitationRequestDTO = {
   organizationId: string;
   userEmail: string;
-  userNumber: string;
 };
 
 export type OrganizationRequestDTO = {
@@ -26,7 +25,7 @@ export type OrganizationRequestDTO = {
 export type ProductRequestDTO = {
   name: string;
   quantity: number;
-  isBought: boolean;
+  purchased: boolean;
   shoppingListId: string;
 };
 

@@ -30,7 +30,8 @@ export type ProductResponseDTO = {
   id: string;
   name: string;
   quantity: number;
-  isBought: boolean;
+  purchased: boolean;
+  billId: string;
 };
 
 export type ShoppingListResponseDTO = {

@@ -47,3 +47,17 @@ export async function updateOrganization(
 export async function deleteOrganization(id: string): Promise<void> {
   await axiosInstance.delete(`/organization/${id}`);
 }
+
+export async function isCurrentUserOwner(id: string | undefined): Promise<boolean> {
+  const response = await axiosInstance.get<boolean>(
+      `/organization/owner/${id}`,
+  );
+  return response.data;
+}
+
+export async function isCurrentUserAdminOrOwner(id: string | undefined): Promise<boolean> {
+  const response = await axiosInstance.get<boolean>(
+      `/organization/admin/${id}`,
+  );
+  return response.data;
+}
