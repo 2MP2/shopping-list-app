@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -19,10 +18,14 @@ import {
     GridRowModel,
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
-import {useLocation} from "react-router-dom";
-import {getProductList} from "../../service/product";
-import {useEffect} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {addProduct, deleteProduct, getProductList, updateProduct} from "../../service/product";
+import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
+import {v4 as uuidv4} from 'uuid';
+import {ProductRequestDTO} from "../../model/dto/request";
+import {ProductResponseDTO} from "../../model/dto/response";
+import {Description} from "@mui/icons-material";
 
 interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -33,31 +36,45 @@ interface EditToolbarProps {
 
 function EditToolbar(props: EditToolbarProps) {
     const { setRows, setRowModesModel } = props;
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const shoppingListId = queryParams.get('shopping-list');
+    const navigate = useNavigate();
 
     const handleClick = () => {
-        const id = "";
-        setRows((oldRows) => [...oldRows, { id, name: '', quantity: 0, isNew: true }]);
+        const id = uuidv4();
+        setRows((oldRows) => [...oldRows, { id, name: '', quantity: 0, purchased: false, bill: false, isNew: true }]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
             [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
         }));
     };
 
+    const navigateToBill = () => {
+        if(shoppingListId){
+            navigate(`/bill-create/?shopping-list=${shoppingListId}`)
+        }
+    }
+
     return (
         <GridToolbarContainer>
             <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-                Add record
+                Add product
+            </Button>
+            <Button color="primary" startIcon={<Description />} onClick={navigateToBill}>
+                Creat Bill
             </Button>
         </GridToolbarContainer>
     );
 }
 
-export default function FullFeaturedCrudGrid() {
+export default function ProductCrudGrid() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const shoppingListId = queryParams.get('shopping-list');
-    const [rows, setRows] = React.useState<GridRowsProp>([]);
-    const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+    const [rows, setRows] = useState<GridRowsProp>([]);
+    const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+
 
     useEffect(() => {
         if(shoppingListId){
@@ -68,8 +85,6 @@ export default function FullFeaturedCrudGrid() {
                 .catch((error) => {
                     toast.error("Couldn't load products");
                 });
-        }else{
-            toast.error("Error");
         }
     }, [shoppingListId]);
 
@@ -88,7 +103,8 @@ export default function FullFeaturedCrudGrid() {
         setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     };
 
-    const handleDeleteClick = (id: GridRowId) => () => {
+    const handleDeleteClick = (id: GridRowId) => async () => {
+        await deleteProduct(id.toString());
         setRows(rows.filter((row: GridRowModel ) => row.id !== id));
     };
 
@@ -104,10 +120,28 @@ export default function FullFeaturedCrudGrid() {
         }
     };
 
-    const processRowUpdate = (newRow: GridRowModel) => {
-        const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row: GridRowModel) => (row.id === newRow.id ? updatedRow : row)));
-        return updatedRow;
+    const processRowUpdate = async (newRow: GridRowModel) => {
+        if(shoppingListId){
+            const product = {...newRow};
+            const productRequestDTO: ProductRequestDTO = {
+                name: product.name,
+                quantity: product.quantity,
+                purchased: product.purchased,
+                shoppingListId: shoppingListId,
+            }
+
+            let productResponseDTO: ProductResponseDTO;
+            if(newRow.isNew){
+                productResponseDTO = await addProduct(productRequestDTO);
+            }else{
+                productResponseDTO = await updateProduct(newRow.id, productRequestDTO);
+            }
+
+            console.log(productResponseDTO.billId !== null)
+            const updatedRow = { ...newRow,id: productResponseDTO.id, isNew: false };
+            setRows(rows.map((row: GridRowModel) => (row.id === newRow.id ? updatedRow : row)));
+            return updatedRow;
+        }
     };
 
     const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -116,7 +150,7 @@ export default function FullFeaturedCrudGrid() {
 
     const columns: GridColDef[] = [
         {
-            field: 'isBought',
+            field: 'purchased',
             headerName: 'Purchased',
             width: 120,
             editable: true,
@@ -128,9 +162,18 @@ export default function FullFeaturedCrudGrid() {
             headerName: 'Quantity',
             type: 'number',
             width: 80,
-            align: 'left',
-            headerAlign: 'left',
             editable: true,
+            align: 'center',
+            headerAlign: 'center',
+        },
+        {
+            field: 'billId',
+            headerName: 'Bill',
+            type: 'boolean',
+            width: 80,
+            align: 'center',
+            headerAlign: 'center',
+            editable: false,
         },
         {
             field: 'actions',
@@ -183,7 +226,7 @@ export default function FullFeaturedCrudGrid() {
     return (
         <Box
             sx={{
-                height: 620,
+                height: 680,
                 width: '100%',
                 '& .actions': {
                     color: 'text.secondary',
@@ -207,6 +250,7 @@ export default function FullFeaturedCrudGrid() {
                 slotProps={{
                     toolbar: { setRows, setRowModesModel },
                 }}
+                isCellEditable={(product) => product.row.billId === null}
             />
         </Box>
     );

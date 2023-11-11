@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -14,15 +13,15 @@ import {useEffect, useState} from "react";
 import {ShoppingListResponseDTO} from "../../model/dto/response";
 import {toast} from "react-toastify";
 import {addShoppingList, deleteShoppingList, getShoppingList} from "../../service/shopping-list";
-import {Outlet, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const drawerWidth = 240;
 
 export default function ShoppingListClippedDrawer() {
     const navigate = useNavigate();
     const [shoppingLists, setShoppingLists] = useState<ShoppingListResponseDTO[]>([]);
-    const [newShoppingList, setNewShoppingList] = React.useState<string>('');
-    const [isAddingShoppingList, setIsAddingShoppingList] = React.useState(false);
+    const [newShoppingList, setNewShoppingList] = useState<string>('');
+    const [isAddingShoppingList, setIsAddingShoppingList] = useState(false);
     const { id } = useParams();
 
     const handleAddItemClick = () => {
@@ -35,13 +34,20 @@ export default function ShoppingListClippedDrawer() {
             try {
                 if(id){
                     const res = await addShoppingList({name: newShoppingList, organizationId: id });
-                    navigate(`/shopping-list/${res.id}`);
+                    navigate(`?shopping-list=${res.id}`);
                     setNewShoppingList("");
-                }else{
-                    toast.error("Error");
+                    setIsAddingShoppingList(false);
+                    getShoppingList({organization: id })
+                        .then((response) => {
+                            setShoppingLists(response.content);
+                        })
+                        .catch((error) => {
+                            toast.error("Couldn't load your shopping lists");
+                        });
+
                 }
             }catch (error){
-                toast.error("Couldn't add new organization");
+                toast.error("Couldn't add new shopping list");
             }
         }
     };
@@ -95,7 +101,7 @@ export default function ShoppingListClippedDrawer() {
                             <ListItem key={org.id} disablePadding>
                                 <ListItemButton href={createShoppingListUrl(org.id)}>
                                     <ListItemText primary={org.name.length > 14 ? org.name.slice(0, 12) + '...' : org.name} />
-                                    <Button onClick={() => handleDeleteItem(org.id)}>Delete</Button>
+                                    <Button href={`/organization/${id}`} onClick={() => handleDeleteItem(org.id)}>Delete</Button>
                                 </ListItemButton>
                             </ListItem>
                         ))}

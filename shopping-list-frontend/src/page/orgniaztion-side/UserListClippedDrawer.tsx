@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,14 +10,13 @@ import { getUserOrganizationList } from "../../service/user-organization";
 import { UserOrganizationResponseDTO } from "../../model/dto/response";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import TextField from "@mui/material/TextField";
 import {UserOrganizationStatus} from "../../model/status";
 import Divider from "@mui/material/Divider";
 
 const drawerWidth = 240;
 
 const listItemTextStyle = {
-    paddingLeft: '16px', // Doda wcięcie z lewej strony
+    paddingLeft: '16px',
 };
 
 export default function UserListClippedDrawer() {
@@ -38,8 +37,6 @@ export default function UserListClippedDrawer() {
                 .catch((error) => {
                     toast.error("Couldn't load users");
                 });
-        } else {
-            toast.error("Error")
         }
     }, [id]);
 
