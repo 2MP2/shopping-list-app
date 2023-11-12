@@ -1,5 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,15 @@ public class ExceptionHandlers {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RegistrationException.class)
     public Map<String, String> handleRegistrationExceptions(RegistrationException e) {
+        logger.error(e.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        errors.put(ERROR_KEY, e.getMessage());
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ExpiredJwtException.class)
+    public Map<String, String> handleExpiredJwtExceptions(ExpiredJwtException e) {
         logger.error(e.getMessage());
         Map<String, String> errors = new HashMap<>();
         errors.put(ERROR_KEY, e.getMessage());

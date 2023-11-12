@@ -44,14 +44,14 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
         String billString = params.get("bill");
         String shoppingListString = params.get("shoppingList");
 
-        if(billString == null && shoppingListString == null) return false;
+        if((billString == null || billString.isEmpty()) && shoppingListString == null) return false;
 
         if(shoppingListString != null) {
             UUID shoppingListId = UUID.fromString(shoppingListString);
             if(! userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId))) return  false;
         }
 
-        if(billString != null) {
+        if(billString != null && !billString.isEmpty()) {
             UUID billId = UUID.fromString(billString);
             return userAuthentication.isCurrentUserInOrganization(billRepository.findOrganizationIdById(billId));
         }

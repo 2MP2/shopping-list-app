@@ -12,9 +12,9 @@ public class BillRequestDTO {
     @Min(value = 0, message = "Amount must be at least 0")
     private int amount;
     @NotBlank(message = "Shop shouldn't be blank")
-    @Size(max = 32, message = "Shop name is too long, max 255 characters")
+    @Size(max = 32, message = "Shop name is too long, max 32 characters")
     private String shop;
-    @Size(max = 255, message = "Comment is too long, max 255 characters")
+    @Size(max = 256, message = "Comment is too long, max 256 characters")
     private String comment;
     @NotNull(message = "Shopping list ID shouldn't be null")
     @org.hibernate.validator.constraints.UUID(message = "Invalid format of shopping list ID")

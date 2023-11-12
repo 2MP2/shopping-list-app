@@ -14,9 +14,11 @@ public class UserRequestDTO {
     @NotNull(message = "User number shouldn,t be null")
     @Pattern(regexp = "^\\d{9}$", message = "User phone number wrong pattern")
     private String number;
+    @Size(max = 64, message = "User e-mail should have max 32 characters")
     @Email(message = "Invalid email format")
     private String email;
     @NotBlank(message = "User password shouldn't be blank")
     @Size(min = 5, message = "User password should have at least 5 characters")
+    @Size(max = 256, message = "User password should have max 256 characters")
     private String password;
 }
