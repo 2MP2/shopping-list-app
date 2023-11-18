@@ -9,11 +9,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Toolbar from "@mui/material/Toolbar";
 import CssBaseline from "@mui/material/CssBaseline";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ShoppingListResponseDTO} from "../../model/dto/response";
 import {toast} from "react-toastify";
 import {addShoppingList, deleteShoppingList, getShoppingList} from "../../service/shopping-list";
 import {useNavigate, useParams} from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const drawerWidth = 240;
 
@@ -101,7 +102,7 @@ export default function ShoppingListClippedDrawer() {
                             <ListItem key={org.id} disablePadding>
                                 <ListItemButton href={createShoppingListUrl(org.id)}>
                                     <ListItemText primary={org.name.length > 14 ? org.name.slice(0, 12) + '...' : org.name} />
-                                    <Button href={`/organization/${id}`} onClick={() => handleDeleteItem(org.id)}>Delete</Button>
+                                    <Button href={`/organization/${id}`} startIcon={<DeleteIcon /> } onClick={() => handleDeleteItem(org.id)}/>
                                 </ListItemButton>
                             </ListItem>
                         ))}

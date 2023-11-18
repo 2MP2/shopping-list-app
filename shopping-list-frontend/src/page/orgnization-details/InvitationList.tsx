@@ -54,7 +54,7 @@ export default function InvitationList() {
     }, [id]);
 
     return (
-        <Box sx={{ maxWidth: 700, height: 400, width: '25%', marginLeft: '50px' }}>
+        <Box sx={{ maxWidth: 700, height: '70vh', width: '25%', marginLeft: '50px' }}>
             <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                 Invitations
             </Typography>

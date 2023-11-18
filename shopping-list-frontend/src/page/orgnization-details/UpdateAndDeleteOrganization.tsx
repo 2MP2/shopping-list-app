@@ -9,7 +9,61 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
-import error = toast.error;
+
+function AlertDeleteSlide() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handlePositiveClose = () => {
+        if (id != null) {
+            deleteOrganization(id).then( () => {
+                navigate('/organization');
+                toast.success('Organization successfully deleted!', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            })
+        }
+        setOpen(false);
+    };
+
+    return (
+        <React.Fragment>
+            <Button variant="outlined" onClick={handleClickOpen} startIcon={<DeleteIcon />}>
+                Delete
+            </Button>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Delete organization?"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to delete the organization? The changes made will be irreversible.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handlePositiveClose}>Yes</Button>
+                    <Button onClick={handleClose} autoFocus>
+                        No
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </React.Fragment>
+    );
+}
 
 export default function UpdateAndDeleteOrganization() {
     const { id } = useParams();
@@ -77,60 +131,5 @@ export default function UpdateAndDeleteOrganization() {
             </Typography>
             <AlertDeleteSlide/>
         </Box>
-    );
-}
-
-function AlertDeleteSlide() {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handlePositiveClose = () => {
-        if (id != null) {
-            deleteOrganization(id).then( () => {
-                navigate('/organization');
-                toast.success('Organization successfully deleted!', {
-                    position: toast.POSITION.TOP_RIGHT,
-                });
-            })
-        }
-        setOpen(false);
-    };
-
-    return (
-        <React.Fragment>
-            <Button variant="outlined" onClick={handleClickOpen} startIcon={<DeleteIcon />}>
-                Delete
-            </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"Delete organization?"}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete the organization? The changes made will be irreversible.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handlePositiveClose}>Yes</Button>
-                    <Button onClick={handleClose} autoFocus>
-                        No
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </React.Fragment>
     );
 }

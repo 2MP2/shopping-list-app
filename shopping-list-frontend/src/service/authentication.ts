@@ -33,7 +33,7 @@ export async function register(
   return response.data;
 }
 
-export async function logout(){
+export function logout(){
   removeAuthToken();
   sessionStorage.removeItem('id');
 }

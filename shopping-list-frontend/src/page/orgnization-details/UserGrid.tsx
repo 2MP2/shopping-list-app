@@ -20,7 +20,6 @@ export default function UserGrid() {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     const handleDeleteClick = (id: GridRowId) => async () => {
-        console.log(id)
         await deleteUserFromOrganization(id.toString())
         setRows(rows.filter((row) => row.id !== id));
     };
@@ -91,7 +90,7 @@ export default function UserGrid() {
     ];
 
     return (
-        <div style={{ height: 680, width: '50%', marginLeft: '20px' }}>
+        <div style={{ height: '80vh', width: '50%', marginLeft: '20px' }}>
             <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
                 Users
             </Typography>

@@ -33,7 +33,7 @@ export default function TransferProductList() {
 
     useEffect(() => {
         if(shoppingListId){
-            getProductList({shoppingList: shoppingListId, purchased: "true"}).then((response) => {
+            getProductList({shoppingList: shoppingListId, purchased: "true", bill: ''}).then((response) => {
                 const filteredProducts = response.content.filter(product => product.billId === null);
                 setLeft(filteredProducts);
             }).catch((error) => {

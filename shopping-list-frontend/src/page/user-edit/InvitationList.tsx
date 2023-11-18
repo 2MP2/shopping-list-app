@@ -49,9 +49,9 @@ export default function InvitationList() {
       sx={{
         padding: 2,
         borderRadius: 2,
-        minWidth: 600,
+        minWidth: 400,
         maxWidth: 600,
-        minHeight: 600,
+        height: '70vh',
         margin: "auto",
         marginTop: "20px",
       }}

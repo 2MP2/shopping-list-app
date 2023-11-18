@@ -18,14 +18,14 @@ import {
     GridRowModel,
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {addProduct, deleteProduct, getProductList, updateProduct} from "../../service/product";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {v4 as uuidv4} from 'uuid';
 import {ProductRequestDTO} from "../../model/dto/request";
 import {ProductResponseDTO} from "../../model/dto/response";
-import {Description} from "@mui/icons-material";
+import {Description, RequestQuote} from "@mui/icons-material";
 
 interface EditToolbarProps {
     setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -35,6 +35,7 @@ interface EditToolbarProps {
 }
 
 function EditToolbar(props: EditToolbarProps) {
+    const { id } = useParams();
     const { setRows, setRowModesModel } = props;
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -43,7 +44,7 @@ function EditToolbar(props: EditToolbarProps) {
 
     const handleClick = () => {
         const id = uuidv4();
-        setRows((oldRows) => [...oldRows, { id, name: '', quantity: 0, purchased: false, bill: false, isNew: true }]);
+        setRows((oldRows) => [...oldRows, { id, name: '', quantity: 0, purchased: false, isNew: true }]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
             [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
@@ -51,8 +52,14 @@ function EditToolbar(props: EditToolbarProps) {
     };
 
     const navigateToBill = () => {
-        if(shoppingListId){
-            navigate(`/bill-create/?shopping-list=${shoppingListId}`)
+        if(shoppingListId && id){
+            navigate(`/organization/bill-create/${id}/?shopping-list=${shoppingListId}`)
+        }
+    }
+
+    const navigateToSettlements = () => {
+        if(shoppingListId && id){
+            navigate(`/organization/settlements/${id}/?shopping-list=${shoppingListId}`)
         }
     }
 
@@ -62,7 +69,10 @@ function EditToolbar(props: EditToolbarProps) {
                 Add product
             </Button>
             <Button color="primary" startIcon={<Description />} onClick={navigateToBill}>
-                Creat Bill
+                Create Bill
+            </Button>
+            <Button color="primary" startIcon={<RequestQuote />} onClick={navigateToSettlements}>
+                Show Settlements
             </Button>
         </GridToolbarContainer>
     );
@@ -78,7 +88,7 @@ export default function ProductCrudGrid() {
 
     useEffect(() => {
         if(shoppingListId){
-            getProductList({shoppingList: shoppingListId })
+            getProductList({shoppingList: shoppingListId, bill: '' })
                 .then((response) => {
                     setRows(response.content);
                 })
@@ -137,7 +147,6 @@ export default function ProductCrudGrid() {
                 productResponseDTO = await updateProduct(newRow.id, productRequestDTO);
             }
 
-            console.log(productResponseDTO.billId !== null)
             const updatedRow = { ...newRow,id: productResponseDTO.id, isNew: false };
             setRows(rows.map((row: GridRowModel) => (row.id === newRow.id ? updatedRow : row)));
             return updatedRow;
@@ -165,15 +174,6 @@ export default function ProductCrudGrid() {
             editable: true,
             align: 'center',
             headerAlign: 'center',
-        },
-        {
-            field: 'billId',
-            headerName: 'Bill',
-            type: 'boolean',
-            width: 80,
-            align: 'center',
-            headerAlign: 'center',
-            editable: false,
         },
         {
             field: 'actions',
@@ -226,8 +226,11 @@ export default function ProductCrudGrid() {
     return (
         <Box
             sx={{
-                height: 680,
-                width: '100%',
+                height: '80vh',
+                width: '35%',
+                minWidth: 600,
+                marginRight: '20px',
+                marginTop: '20px',
                 '& .actions': {
                     color: 'text.secondary',
                 },
@@ -250,7 +253,6 @@ export default function ProductCrudGrid() {
                 slotProps={{
                     toolbar: { setRows, setRowModesModel },
                 }}
-                isCellEditable={(product) => product.row.billId === null}
             />
         </Box>
     );

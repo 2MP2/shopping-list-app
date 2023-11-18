@@ -9,6 +9,7 @@ export type BillResponseDTO = {
   amount: number;
   shop: string;
   comment: string;
+  updateTime: number;
   products: ProductResponseDTO[];
   user: UserResponseDTO;
 };
@@ -54,6 +55,12 @@ export type UserResponseDTO = {
   number: string;
   email: string;
 };
+
+export type TransactionResponseDTO = {
+  userFrom: UserResponseDTO;
+  userTo: UserResponseDTO;
+  amount: number;
+}
 
 export type Page<T> = {
   totalElements: number;

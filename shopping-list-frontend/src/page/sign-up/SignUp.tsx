@@ -2,20 +2,18 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Copyright from "../../component/other/Copyright";
+import Copyright from "../../component/Copyright";
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {register} from "../../service/authentication";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {AxiosError} from "axios";
 export default function SignUp() {
   const [isSubmitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -40,7 +38,13 @@ export default function SignUp() {
         toast.error("Registration error. Check your details.");
       }
     } catch (error) {
-      toast.error("Registration error.");
+        if(error instanceof AxiosError){
+            const errors = JSON.parse(error.request.responseText)
+            Object.keys(errors).forEach((fieldName) => {
+                toast.error(errors[fieldName])
+            });
+        }
+        else toast.error("Registration error.");
     } finally {
       setSubmitting(false);
     }
@@ -90,20 +94,20 @@ export default function SignUp() {
                             <TextField
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
+                                name="phoneNumber"
+                                label="Phone Number"
+                                id="phoneNumber"
+                                autoComplete="tel-national"
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 required
                                 fullWidth
-                                name="phoneNumber"
-                                label="Phone Number"
-                                id="phoneNumber"
-                                autoComplete="tel-national"
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -129,7 +133,7 @@ export default function SignUp() {
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="/sing-in" variant="body2">
+                            <Link href="/sign-in" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>

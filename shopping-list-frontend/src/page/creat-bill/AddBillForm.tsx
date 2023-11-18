@@ -76,6 +76,14 @@ export default function AddBillForm(props: {productIds: string[]} ) {
             >
                 Create
             </Button>
+            <Button
+                sx={{marginLeft: "10px"}}
+                variant="contained"
+                color="primary"
+                onClick={() => {navigate(-1)}}
+            >
+                Cancel
+            </Button>
         </Box>
     );
 };

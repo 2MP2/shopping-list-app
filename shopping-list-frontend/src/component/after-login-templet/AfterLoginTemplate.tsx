@@ -13,16 +13,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
-import {OrganizationResponseDTO} from "../../../model/dto/response";
+import {OrganizationResponseDTO} from "../../model/dto/response";
 import {ReactNode, useEffect, useState} from "react";
-import {addOrganization, getOrganizationList, isCurrentUserAdminOrOwner} from "../../../service/organization";
+import {addOrganization, getOrganizationList, isCurrentUserAdminOrOwner} from "../../service/organization";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import {logout} from "../../../service/authentication";
+import {logout} from "../../service/authentication";
 import {useNavigate, useParams} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import {Badge} from "@mui/material";
-import {countUserInvitation} from "../../../service/invitation";
+import {countUserInvitation} from "../../service/invitation";
 import * as React from "react";
 
 
@@ -115,12 +115,16 @@ export default function AfterLoginTemplate({children}: AfterLoginTemplateProps) 
                 .catch((error) => {
                     toast.error("Couldn't load your organization");
                 });
+        }
+    }, [refresh, userId]);
 
+    useEffect(() => {
+        if(userId){
             adminButtonsDisable().then((isDisable) => {
                 setIsButtonDisabled(isDisable);
             });
         }
-    }, [refresh, userId]);
+    }, [userId]);
 
     useEffect(() => {
         if (userId) {
@@ -134,7 +138,7 @@ export default function AfterLoginTemplate({children}: AfterLoginTemplateProps) 
                     });
             };
             fetchInvitationCount();
-            const interval = setInterval(fetchInvitationCount, 30000);
+            const interval = setInterval(fetchInvitationCount, 60000);
             return () => clearInterval(interval);
         }
     }, [userId]);
@@ -172,7 +176,7 @@ export default function AfterLoginTemplate({children}: AfterLoginTemplateProps) 
                                 {isAddingOrganization ? (
                                     <div>
                                         <TextField
-                                            label="New shopping list"
+                                            label="New organization"
                                             value={newOrganization}
                                             onChange={(e) => setNewOrganization(e.target.value)}
                                         />

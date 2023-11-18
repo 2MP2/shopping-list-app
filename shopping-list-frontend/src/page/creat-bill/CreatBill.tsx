@@ -1,12 +1,10 @@
 import React from 'react';
 import TransferProductList from "./TransferProductList";
 
-function CreateBill() {
+export default function CreateBill() {
     return (
         <div>
             <TransferProductList/>
         </div>
     );
 }
-
-export default CreateBill;

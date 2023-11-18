@@ -7,14 +7,13 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { login } from "../../service/authentication";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Copyright from "../../component/other/Copyright";
+import Copyright from "../../component/Copyright";
 import {FormEvent} from "react";
 
 export default function SignIn() {
@@ -94,7 +93,7 @@ export default function SignIn() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="sing-up" variant="body2">
+              <Link href="sign-up" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
