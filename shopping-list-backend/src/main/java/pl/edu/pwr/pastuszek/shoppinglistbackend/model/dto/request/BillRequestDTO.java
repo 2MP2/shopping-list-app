@@ -1,16 +1,19 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class BillRequestDTO {
     @NotNull(message = "Amount shouldn't be null")
-    @Min(value = 0, message = "Amount must be at least 0")
-    private int amount;
+    @NotNull(message = "Amount cannot be null")
+    @Digits(integer = 10, fraction = 2, message = "Invalid format for amount")
+    private BigDecimal amount;
     @NotBlank(message = "Shop shouldn't be blank")
     @Size(max = 32, message = "Shop name is too long, max 32 characters")
     private String shop;
