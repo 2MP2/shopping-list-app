@@ -37,10 +37,10 @@ public class ProductSpecifications implements CreatSpecifications<Product> {
 
     public static Specification<Product> withBillId(String billId) {
         return (root, query, criteriaBuilder) -> {
-            Join<Product, Bill> billJoin = root.join("bill");
             if(billId.isEmpty()){
-                return criteriaBuilder.equal(billJoin.get("id"), (Object) null);
+                return criteriaBuilder.isNull(root.get("bill"));
             }else {
+                Join<Product, Bill> billJoin = root.join("bill");
                 return criteriaBuilder.equal(billJoin.get("id"), UUID.fromString(billId));
             }
         };
