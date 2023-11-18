@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.sql.Timestamp;
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "invitation", schema = "public", catalog = "shopping_list_db")
+@Table(name = "invitation",
+        schema = "public",
+        catalog = "shopping_list_db",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"organization_id", "user_id"}))
 @jakarta.persistence.Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,8 +21,6 @@ public class Invitation implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "expiration_date")
-    private Timestamp expirationDate;
     @ManyToOne
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
@@ -48,7 +48,6 @@ public class Invitation implements Entity {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "expirationDate = " + expirationDate + ", " +
                 "organization = " + organization + ", " +
                 "user = " + user + ")";
     }

@@ -1,42 +1,61 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.User;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+@ForLoggedIn
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
+
+    @JsonView(Views.Public.class)
     @GetMapping
-    public List<User> getUserList() {
-        return this.userService.list();
+    public Page<UserResponseDTO> getUserList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.userService.list(params, pageable);
     }
 
+    @JsonView(Views.Public.class)
     @GetMapping("{id}")
-    public User getUserById(@PathVariable("id") UUID id) {
+    public UserResponseDTO getUserById(@PathVariable("id") UUID id) {
         return this.userService.getOne(id);
     }
 
+    @ForAdmin
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return this.userService.add(user);
+    public UserResponseDTO addUser(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+        return this.userService.add(userRequestDTO);
     }
 
     @PutMapping("{id}")
-    public User updateUser(@PathVariable("id") UUID id, @RequestBody User user){
-        return this.userService.update(id, user);
+    public UserResponseDTO updateUser(@Valid @PathVariable("id") UUID id, @RequestBody UserRequestDTO userRequestDTO){
+        return this.userService.update(id, userRequestDTO);
     }
 
     @DeleteMapping("{id}")
     public void deleteUserById(@PathVariable("id") UUID id){
         userService.delete(id);
+    }
+
+    @JsonView(Views.Internal.class)
+    @GetMapping("info/{id}")
+    public UserResponseDTO getFullInfo(@PathVariable("id") UUID id){
+        return this.userService.getOne(id);
     }
 
 }

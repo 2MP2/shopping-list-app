@@ -3,12 +3,12 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Table(name = "user", schema = "public", catalog = "shopping_list_db")
 @jakarta.persistence.Entity
@@ -17,31 +17,34 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Where(clause = "deleted = false")
-public class User implements SoftDeleteEntity {
+public class User implements Entity, UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @JsonIgnore
-    private boolean deleted = Boolean.FALSE;
     private String name;
     private String surname;
     @Column(unique = true)
     private String number;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
-    private String login;
     @JsonIgnore
     private String password;
-    @OneToMany(mappedBy = "user")
+    @Enumerated(value = EnumType.STRING)
+    @JsonIgnore
+    private Role role = Role.USER;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
-    private List<UserOrganization> userOrganizations;
-    @OneToMany(mappedBy = "user")
+    private Set<UserOrganization> userOrganizations;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
-    private List<Invitation> invitations;
+    private Set<Invitation> invitations;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @ToString.Exclude
+    @JsonIgnore
+    private Set<Bill> bills;
 
     @Override
     public final boolean equals(Object o) {
@@ -63,11 +66,39 @@ public class User implements SoftDeleteEntity {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "deleted = " + deleted + ", " +
                 "name = " + name + ", " +
                 "surname = " + surname + ", " +
                 "number = " + number + ", " +
-                "email = " + email + ", " +
-                "login = " + login + ")";
+                "email = " + email + ")";
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

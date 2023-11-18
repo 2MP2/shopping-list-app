@@ -1,13 +1,19 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.OrganizationService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Organization;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.OrganizationRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.OrganizationResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+@ForLoggedIn
 @RestController
 @RequestMapping("organization")
 @AllArgsConstructor
@@ -15,27 +21,37 @@ public class OrganizationController {
     private final OrganizationService organizationService;
 
     @GetMapping
-    public List<Organization> getUserList() {
-        return this.organizationService.list();
+    public Page<OrganizationResponseDTO> getOrganizationList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.organizationService.list(params, pageable);
     }
 
     @GetMapping("{id}")
-    public Organization getOrganizationById(@PathVariable("id") UUID id) {
+    public OrganizationResponseDTO getOrganizationById(@PathVariable("id") UUID id) {
         return this.organizationService.getOne(id);
     }
 
     @PostMapping
-    public Organization addUser(@RequestBody Organization organization) {
-        return this.organizationService.add(organization);
+    public OrganizationResponseDTO addOrganization(@Valid @RequestBody OrganizationRequestDTO organizationRequestDTO) {
+        return this.organizationService.add(organizationRequestDTO);
     }
 
     @PutMapping("{id}")
-    public Organization updateUser(@PathVariable("id") UUID id, @RequestBody Organization organization){
-        return this.organizationService.update(id, organization);
+    public OrganizationResponseDTO updateOrganization(@Valid @PathVariable("id") UUID id, @RequestBody OrganizationRequestDTO organizationRequestDTO){
+        return this.organizationService.update(id, organizationRequestDTO);
     }
 
     @DeleteMapping("{id}")
     public void deleteOrganizationById(@PathVariable("id") UUID id){
         organizationService.delete(id);
+    }
+
+    @GetMapping("owner/{id}")
+    public boolean isCurrentUserOwner(@PathVariable("id") UUID id){
+        return this.organizationService.isCurrentUserOwner(id);
+    }
+
+    @GetMapping("admin/{id}")
+    public boolean isCurrentUserAdminOrOwner(@PathVariable("id") UUID id){
+        return this.organizationService.isCurrentUserAdminOrOwner(id);
     }
 }

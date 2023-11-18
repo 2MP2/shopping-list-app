@@ -5,8 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "bill", schema = "public", catalog = "shopping_list_db")
@@ -20,16 +22,21 @@ public class Bill implements Entity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private int amount;
+    private BigDecimal amount;
     private String shop;
     private String comment;
-    @OneToMany(mappedBy = "bill")
+    @Column(name = "update_time")
+    private Timestamp updateTime = new Timestamp(System.currentTimeMillis());
+    @OneToMany(mappedBy = "bill", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
-    private List<Product> products;
-    @ManyToOne
+    private Set<Product> products;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User user;
 
     @Override
     public final boolean equals(Object o) {

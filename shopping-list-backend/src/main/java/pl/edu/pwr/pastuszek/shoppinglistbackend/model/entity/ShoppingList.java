@@ -1,14 +1,12 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Table;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Table(name = "shopping_list", schema = "public", catalog = "shopping_list_db")
@@ -23,19 +21,17 @@ public class ShoppingList implements Entity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
-    @Filter(name="deleted",condition="deleted IS FALSE")
     private Organization organization;
-    @OneToMany(mappedBy = "shoppingList")
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
-    private List<Product> products;
-    @OneToMany(mappedBy = "shoppingList")
+    private Set<Product> products;
+    @OneToMany(mappedBy = "shoppingList", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
-    private List<Bill> bills;
+    private Set<Bill> bills;
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

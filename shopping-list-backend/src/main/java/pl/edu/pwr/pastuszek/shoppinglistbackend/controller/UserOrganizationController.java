@@ -1,13 +1,20 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.UserOrganizationService;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.UserOrganization;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.UserOrganizationRequestDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserOrganizationResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForAdmin;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
+@ForLoggedIn
 @RestController
 @RequestMapping("user-organization")
 @AllArgsConstructor
@@ -15,23 +22,25 @@ public class UserOrganizationController {
     private final UserOrganizationService userOrganizationService;
 
     @GetMapping
-    public List<UserOrganization> getUserOrganizationList() {
-        return this.userOrganizationService.list();
+    public Page<UserOrganizationResponseDTO> getUserOrganizationList(@RequestParam(required = false) Map<String, String> params, Pageable pageable) {
+        return this.userOrganizationService.list(params, pageable);
     }
 
+    @ForAdmin
     @GetMapping("{id}")
-    public UserOrganization getUserOrganizationById(@PathVariable("id") UUID id) {
+    public UserOrganizationResponseDTO getUserOrganizationById(@PathVariable("id") UUID id) {
         return this.userOrganizationService.getOne(id);
     }
 
+    @ForAdmin
     @PostMapping
-    public UserOrganization addUserOrganization(@RequestBody UserOrganization userOrganization) {
-        return this.userOrganizationService.add(userOrganization);
+    public UserOrganizationResponseDTO addUserOrganization(@Valid @RequestBody UserOrganizationRequestDTO userOrganizationRequestDTO) {
+        return this.userOrganizationService.add(userOrganizationRequestDTO);
     }
 
     @PutMapping("{id}")
-    public UserOrganization updateUserOrganization(@PathVariable("id") UUID id, @RequestBody UserOrganization userOrganization){
-        return this.userOrganizationService.update(id, userOrganization);
+    public UserOrganizationResponseDTO updateUserOrganization(@Valid @PathVariable("id") UUID id, @RequestBody UserOrganizationRequestDTO userOrganizationRequestDTO){
+        return this.userOrganizationService.update(id, userOrganizationRequestDTO);
     }
 
     @DeleteMapping("{id}")

@@ -15,8 +15,6 @@ services:
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     ports:
       - "${POSTGRES_PORT}:5432"
-    networks:
-      - app-db
     expose:
       - 5432
     healthcheck:
@@ -24,12 +22,19 @@ services:
       interval: 10s
       timeout: 1s
       retries: 3
-    profiles:
-      - frontend
-      - backend
+
+  backend-app:
+    container_name: shopping_app_backend
+    build:  "../"
+    env_file: ./.env
+    ports:
+      - "${BACKEND_PORT}:8080"
+    depends_on:
+      - database
+    environment:
+      - SPRING_DATASOURCE_URL
+      - SPRING_DATASOURCE_USER
+      - SPRING_DATASOURCE_PASSWORD
 
 volumes:
   shopping-list-data:
-
-networks:
-  app-db:

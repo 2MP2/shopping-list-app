@@ -20,11 +20,12 @@ public class Product implements Entity {
     private UUID id;
     private String name;
     private int quantity;
-    private String status;
-    @ManyToOne
+    @Column(name = "purchased")
+    private boolean purchased;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shopping_list_id", referencedColumnName = "id")
     private ShoppingList shoppingList;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
     private Bill bill;
 
@@ -50,7 +51,7 @@ public class Product implements Entity {
                 "id = " + id + ", " +
                 "name = " + name + ", " +
                 "quantity = " + quantity + ", " +
-                "status = " + status + ", " +
+                "status = " + purchased + ", " +
                 "shoppingList = " + shoppingList + ", " +
                 "bill = " + bill + ")";
     }
