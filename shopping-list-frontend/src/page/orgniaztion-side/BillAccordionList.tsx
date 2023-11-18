@@ -59,13 +59,14 @@ export default function BillAccordionList() {
                         <Typography sx={{ width: '50%', flexShrink: 0 }}>
                             {new Date(bill.updateTime).toLocaleDateString('pl-PL')}
                             {" "}
-                            {bill.shop}
+                            {bill.user.name + " " + bill.user.surname}
                         </Typography>
                         <Typography sx={{ color: 'text.secondary' }}>{bill.amount} zł <Button startIcon={<DeleteIcon /> } onClick={() => handleDeleteItem(bill.id)}/> </Typography>
 
                     </AccordionSummary>
                     <AccordionDetails>
                         <div>
+                            <Typography>Shop: {bill.shop}</Typography>
                             <Typography>Comment: {bill.comment ? bill.comment : "---"}</Typography>
                             <Typography variant="h5">Products:</Typography>
                             <ul>
