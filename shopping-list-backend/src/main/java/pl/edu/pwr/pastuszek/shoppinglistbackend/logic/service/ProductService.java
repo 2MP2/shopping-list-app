@@ -14,7 +14,6 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.ProductRequest
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.ProductResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Bill;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Product;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.ProductStatus;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.UserAuthentication;
 
 import java.util.Map;
@@ -45,14 +44,14 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
         String billString = params.get("bill");
         String shoppingListString = params.get("shoppingList");
 
-        if(billString == null && shoppingListString == null) return false;
+        if((billString == null || billString.isEmpty()) && shoppingListString == null) return false;
 
         if(shoppingListString != null) {
             UUID shoppingListId = UUID.fromString(shoppingListString);
             if(! userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId))) return  false;
         }
 
-        if(billString != null) {
+        if(billString != null && !billString.isEmpty()) {
             UUID billId = UUID.fromString(billString);
             return userAuthentication.isCurrentUserInOrganization(billRepository.findOrganizationIdById(billId));
         }
@@ -63,25 +62,21 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
     @Override
     protected boolean isValidToGetOne(UUID id) {
         if(userAuthentication.isAdmin()) return true;
-        return userAuthentication.isCurrentUserOwnerInOrganization(((ProductRepository) repository).findOrganizationIdById(id));
+        return userAuthentication.isCurrentUserInOrganization(((ProductRepository) repository).findOrganizationIdById(id));
     }
 
     @Override
     protected boolean isValidToAdd(ProductRequestDTO productRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-        UUID organizationId = UUID.fromString(productRequestDTO.getShoppingListId());
-        return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(organizationId));
+        UUID shoppingListId = UUID.fromString(productRequestDTO.getShoppingListId());
+        return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId));
     }
 
     @Override
     protected boolean isValidToUpdate(Product entity, ProductRequestDTO productRequestDTO) {
         if(userAuthentication.isAdmin()) return true;
-
         UUID shoppingListId = UUID.fromString(productRequestDTO.getShoppingListId());
-
-        if(shoppingListId!= entity.getShoppingList().getId()) return false;
-
-        if(! userAuthentication.isCurrentUserOwnerInOrganization(((ProductRepository) repository).findOrganizationIdById(entity.getId()))) return false;
+        if(!shoppingListId.equals(entity.getShoppingList().getId())) return false;
         return userAuthentication.isCurrentUserInOrganization(shoppingListRepository.findOrganizationIdById(shoppingListId));
     }
 
@@ -104,7 +99,7 @@ public class ProductService extends MappedCrudService<Product, ProductRequestDTO
                 .filter( product -> product.getShoppingList().getId().equals(bill.getShoppingList().getId()))
                 .forEach(product -> {
                     product.setBill(bill);
-                    product.setStatus(ProductStatus.PURCHASED);
+                    product.setPurchased(Boolean.TRUE);
                 });
     }
 

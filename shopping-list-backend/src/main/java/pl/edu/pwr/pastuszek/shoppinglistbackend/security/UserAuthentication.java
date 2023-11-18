@@ -41,7 +41,7 @@ public class UserAuthentication {
 
     public boolean isMinAdminInOrganization(UUID organizationUUID){
         UserOrganization userOrganization = userOrganizationRepository
-                .findUserOrganizationByUserIdAndOrgId(getAuthenticationInfo().getId(), organizationUUID)
+                .findByUserIdAndOrganizationId(getAuthenticationInfo().getId(), organizationUUID)
                 .orElseThrow(()->{
                     var e = new EntityNotFoundException("User with id " + getAuthenticationInfo().getId() + " doesn't belongs to organization with id " + organizationUUID);
                     logger.error(e.getMessage(), e);
@@ -54,7 +54,7 @@ public class UserAuthentication {
 
     public boolean isCurrentUserOwnerInOrganization(UUID organizationUUID){
         UserOrganization userOrganization = userOrganizationRepository
-                .findUserOrganizationByUserIdAndOrgId(getAuthenticationInfo().getId(), organizationUUID)
+                .findByUserIdAndOrganizationId(getAuthenticationInfo().getId(), organizationUUID)
                 .orElseThrow(()->{
                     var e = new EntityNotFoundException("User with id " + getAuthenticationInfo().getId() + " doesn't belongs to organization with id " + organizationUUID);
                     logger.error(e.getMessage(), e);

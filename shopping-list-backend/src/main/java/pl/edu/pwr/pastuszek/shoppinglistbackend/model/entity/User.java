@@ -3,7 +3,6 @@ package pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,14 +17,11 @@ import java.util.*;
 @Getter
 @Setter
 @Builder
-@Where(clause = "deleted = false")
-public class User implements SoftDeleteEntity, UserDetails {
+public class User implements Entity, UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @JsonIgnore
-    private boolean deleted = Boolean.FALSE;
     private String name;
     private String surname;
     @Column(unique = true)
@@ -37,25 +33,18 @@ public class User implements SoftDeleteEntity, UserDetails {
     @Enumerated(value = EnumType.STRING)
     @JsonIgnore
     private Role role = Role.USER;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
     private Set<UserOrganization> userOrganizations;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
     private Set<Invitation> invitations;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     @ToString.Exclude
     @JsonIgnore
     private Set<Bill> bills;
-
-    @PreRemove
-    private void preDelete(){
-        for (UserOrganization userOrg: userOrganizations) {
-            userOrg.setDeleted(true);
-        }
-    }
 
     @Override
     public final boolean equals(Object o) {
@@ -77,7 +66,6 @@ public class User implements SoftDeleteEntity, UserDetails {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "id = " + id + ", " +
-                "deleted = " + deleted + ", " +
                 "name = " + name + ", " +
                 "surname = " + surname + ", " +
                 "number = " + number + ", " +
@@ -111,6 +99,6 @@ public class User implements SoftDeleteEntity, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return !deleted;
+        return true;
     }
 }

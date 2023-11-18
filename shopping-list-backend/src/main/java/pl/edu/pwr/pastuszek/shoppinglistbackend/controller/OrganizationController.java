@@ -44,4 +44,14 @@ public class OrganizationController {
     public void deleteOrganizationById(@PathVariable("id") UUID id){
         organizationService.delete(id);
     }
+
+    @GetMapping("owner/{id}")
+    public boolean isCurrentUserOwner(@PathVariable("id") UUID id){
+        return this.organizationService.isCurrentUserOwner(id);
+    }
+
+    @GetMapping("admin/{id}")
+    public boolean isCurrentUserAdminOrOwner(@PathVariable("id") UUID id){
+        return this.organizationService.isCurrentUserAdminOrOwner(id);
+    }
 }

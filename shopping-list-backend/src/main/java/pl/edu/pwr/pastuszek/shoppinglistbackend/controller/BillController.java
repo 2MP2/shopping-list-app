@@ -9,9 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.logic.service.BillService;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.request.BillRequestDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.BillResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.TransactionResponseDTO;
+import pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response.UserResponseDTO;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.security.annotation.ForLoggedIn;
 import pl.edu.pwr.pastuszek.shoppinglistbackend.validation.Views;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,5 +51,15 @@ public class BillController {
     @DeleteMapping("{id}")
     public void deleteBillById(@PathVariable("id") UUID id){
         billService.delete(id);
+    }
+
+
+    @GetMapping("average/{id}")
+    public Map<UserResponseDTO, BigDecimal> calculateUserExpenses(@PathVariable("id") UUID shoppingListId){
+        return this.billService.calculateUserExpenses(shoppingListId);
+    }
+    @GetMapping("transaction/{id}")
+    public List<TransactionResponseDTO> creatTransactionalList(@PathVariable("id") UUID shoppingListId){
+        return this.billService.creatTransactionalList(shoppingListId);
     }
 }

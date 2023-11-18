@@ -1,32 +1,32 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import SignIn from "./page/sing-in/SignIn";
-import SignUp from "./page/sing-up/SignUp";
-import CreateOrganization from "./page/creat-orgnization/CreatOrganization";
+import SignIn from "./page/sign-in/SignIn";
+import SignUp from "./page/sign-up/SignUp";
 import OrganizationDetails from "./page/orgnization-details/OrganizationDetails";
 import OrganizationSide from "./page/orgniaztion-side/OrganizationSide";
-import ShoppingListSide from "./page/shopping-list-side/ShoppingListSide";
 import UserEdit from "./page/user-edit/UserEdit";
 import CreateBill from "./page/creat-bill/CreatBill";
+import PrivateRoute from "./component/PrivateRoute";
+import Settlements from "./page/settlements/Settlements";
 
 function App() {
   return (
-    <>
+
       <Routes>
         <Route path="/" element={<SignIn />} />
-        <Route path="/sing-in" element={<SignIn />} />
-        <Route path="/sing-up" element={<SignUp />} />
-        <Route path="/organization">
-          <Route path="" element={<OrganizationSide />} />
-          <Route path=":id" element={<OrganizationSide />} />
-          <Route path="create" element={<CreateOrganization />} />
-          <Route path="details/:id" element={<OrganizationDetails />} />
-        </Route>
-        <Route path="/shopping-list/:id" element={<ShoppingListSide />} />
-        <Route path="/user-edit" element={<UserEdit />} />
-        <Route path="/bill-create" element={<CreateBill />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+              <Route element={<PrivateRoute/>}>
+                  <Route path="/organization">
+                      <Route path="" element={<OrganizationSide />} />
+                      <Route path=":id" element={<OrganizationSide />} />
+                      <Route path="details/:id" element={<OrganizationDetails />} />
+                      <Route path="settlements/:id" element={<Settlements />} />
+                      <Route path="bill-create/:id" element={<CreateBill />} />
+                  </Route>
+                  <Route path="/user-edit" element={<UserEdit />} />
+              </Route>
       </Routes>
-    </>
   );
 }
 

@@ -17,14 +17,8 @@ public interface InvitationRepository extends BaseRepository<Invitation> {
             @Param("orgId") UUID orgId
     );
 
-    @Query("SELECT CASE WHEN COUNT(i) > 0 THEN TRUE ELSE FALSE END " +
-            "FROM Invitation i " +
-            "WHERE i.user.email = :userNumber AND i.organization.id = :orgId")
-    boolean existsInvitationByUserNumberAndOrgId(
-            @Param("userNumber") String userNumber,
-            @Param("orgId") UUID orgId
-    );
-
     @Query("SELECT i.organization.id FROM Invitation i WHERE i.id = :invitationId")
     UUID findOrganizationIdById(@Param("invitationId") UUID invitationId);
+
+    long countByUser_Id(UUID userId);
 }

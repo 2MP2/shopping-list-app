@@ -3,7 +3,7 @@ import { axiosInstance } from "./axios";
 import { ProductRequestDTO } from "../model/dto/request";
 
 export async function getProductList(
-  params: any,
+  params: Record<string, string>,
 ): Promise<Page<ProductResponseDTO>> {
   const response = await axiosInstance.get<Page<ProductResponseDTO>>(
     "/product",
@@ -44,4 +44,11 @@ export async function updateProduct(
 
 export async function deleteProduct(id: string): Promise<void> {
   await axiosInstance.delete(`/product/${id}`);
+}
+
+export async function addBillToProducts(
+  billId: string,
+  products: string[],
+): Promise<void> {
+  await axiosInstance.put(`/product/bill-to-products/${billId}`, products);
 }

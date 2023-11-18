@@ -37,7 +37,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User newUser = userDTOMapper.convertDtoToFullEntity(user);
         userRepository.save(newUser);
-        var jwt = jwtService.generateToken(newUser);
+        var jwt = jwtService.generateToken(Map.of("id", newUser.getId()), newUser);
         return new AuthenticationResponse(jwt);
     }
 
@@ -51,7 +51,7 @@ public class AuthenticationService {
                 .orElseThrow(()-> new IllegalStateException(
                         "user with id: " + authenticationRequest.getEmail() + " dose not exists"
                 ));
-        String token = jwtService.generateToken(Map.of("role", user.getRole()), user);
+        String token = jwtService.generateToken(Map.of("id", user.getId()), user);
         return new AuthenticationResponse(token);
     }
 }

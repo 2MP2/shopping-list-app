@@ -1,4 +1,4 @@
-import { BillResponseDTO, Page } from "../model/dto/response";
+import {BillResponseDTO, Page, TransactionResponseDTO} from "../model/dto/response";
 import { axiosInstance } from "./axios";
 import { BillRequestDTO } from "../model/dto/request";
 
@@ -14,6 +14,11 @@ export async function getBillList(
 
 export async function getBillById(id: string): Promise<BillResponseDTO> {
   const response = await axiosInstance.get<BillResponseDTO>(`/bill/${id}`);
+  return response.data;
+}
+
+export async function getTransactionsByShoppingId(id: string): Promise<TransactionResponseDTO[]> {
+  const response = await axiosInstance.get<TransactionResponseDTO[]>(`/bill/transaction/${id}`);
   return response.data;
 }
 

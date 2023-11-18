@@ -37,7 +37,7 @@ public class OrganizationService extends MappedCrudService<Organization, Organiz
         userOrganizationRepository.save(
                 UserOrganization
                         .builder()
-                        .status(UserOrganizationStatus.USER)
+                        .status(UserOrganizationStatus.OWNER)
                         .user(userAuthentication.getAuthenticationInfo())
                         .organization(Organization.builder().id(organizationResponseDTO.getId()).build())
                         .build()
@@ -78,5 +78,13 @@ public class OrganizationService extends MappedCrudService<Organization, Organiz
     protected boolean isValidToDelete(UUID id) {
         if(userAuthentication.isAdmin()) return true;
         return userAuthentication.isCurrentUserOwnerInOrganization(id);
+    }
+
+    public boolean isCurrentUserOwner(UUID organizationId){
+        return userAuthentication.isCurrentUserOwnerInOrganization(organizationId);
+    }
+
+    public boolean isCurrentUserAdminOrOwner(UUID organizationId){
+        return userAuthentication.isMinAdminInOrganization(organizationId);
     }
 }

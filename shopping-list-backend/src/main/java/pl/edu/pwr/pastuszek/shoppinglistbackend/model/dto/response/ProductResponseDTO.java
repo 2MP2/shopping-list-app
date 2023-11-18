@@ -1,7 +1,6 @@
 package pl.edu.pwr.pastuszek.shoppinglistbackend.model.dto.response;
 
 import lombok.Data;
-import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.ProductStatus;
 
 import java.util.UUID;
 
@@ -10,5 +9,6 @@ public class ProductResponseDTO {
     private UUID id;
     private String name;
     private int quantity;
-    private ProductStatus status;
+    private boolean purchased;
+    private UUID billId;
 }

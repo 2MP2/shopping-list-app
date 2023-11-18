@@ -68,7 +68,7 @@ public class ShoppingListService extends MappedCrudService<ShoppingList, Shoppin
 
         UUID organizationId = UUID.fromString(shoppingListRequestDTO.getOrganizationId());
 
-        if(organizationId != entity.getOrganization().getId()) return false;
+        if(!organizationId.equals(entity.getOrganization().getId())) return false;
 
         if(!userAuthentication.isCurrentUserInOrganization(((ShoppingListRepository) repository).findOrganizationIdById(entity.getId()))) return false;
         return userAuthentication.isCurrentUserInOrganization(organizationId);

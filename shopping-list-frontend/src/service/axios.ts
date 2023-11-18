@@ -6,11 +6,22 @@ export const axiosInstance : AxiosInstance = axios.create({
 });
 
 export async function updateAuthToken(authToken: string) : Promise<void> {
-  axiosInstance.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${authToken}`;
+  sessionStorage.setItem("authToken", authToken);
 }
 
 export function removeAuthToken(): void {
-  delete axiosInstance.defaults.headers.common["Authorization"];
+  sessionStorage.removeItem("authToken");
 }
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+      const authToken = sessionStorage.getItem("authToken");
+      if (authToken) {
+        config.headers["Authorization"] = `Bearer ${authToken}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+);

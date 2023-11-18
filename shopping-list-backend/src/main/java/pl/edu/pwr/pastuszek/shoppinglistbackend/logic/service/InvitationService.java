@@ -65,11 +65,6 @@ public class InvitationService extends MappedCrudService<Invitation, InvitationR
                 .existsInvitationByUserEmailAndOrgId(invitationRequestDTO.getUserEmail(), organizationId))){
             throw new InvitationException("Invitation already exist");
         }
-        if(invitationRequestDTO.getUserNumber()!=null
-                && (((InvitationRepository)repository)
-                .existsInvitationByUserNumberAndOrgId(invitationRequestDTO.getUserNumber(), organizationId))){
-            throw new InvitationException("Invitation already exist");
-        }
 
         if(userAuthentication.isAdmin()) return true;
         return userAuthentication.isMinAdminInOrganization(organizationId);
@@ -110,11 +105,21 @@ public class InvitationService extends MappedCrudService<Invitation, InvitationR
             );
         }
 
-        delete(invitation.getId());
+        repository.delete(invitation);
     }
 
     protected boolean isValidToAcceptInvitation(Invitation invitation){
         if(userAuthentication.isAdmin()) return true;
         return userAuthentication.isCurrentUserHaveThisUUID(invitation.getUser().getId());
+    }
+
+    public long countInvitationForUser(UUID id){
+        if(!isValidToCountInvitationForUser(id)) throw new AccessDeniedException("Access denied!");
+        return ((InvitationRepository)repository).countByUser_Id(id);
+    }
+
+    protected boolean isValidToCountInvitationForUser(UUID id){
+        if(userAuthentication.isAdmin()) return true;
+        return userAuthentication.isCurrentUserHaveThisUUID(id);
     }
 }

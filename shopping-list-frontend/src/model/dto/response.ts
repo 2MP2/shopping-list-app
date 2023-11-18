@@ -1,4 +1,4 @@
-import { ProductStatus } from "../status";
+import {UserOrganizationStatus} from "../status";
 
 export type AuthenticationResponse = {
   token: string;
@@ -9,6 +9,7 @@ export type BillResponseDTO = {
   amount: number;
   shop: string;
   comment: string;
+  updateTime: number;
   products: ProductResponseDTO[];
   user: UserResponseDTO;
 };
@@ -30,22 +31,18 @@ export type ProductResponseDTO = {
   id: string;
   name: string;
   quantity: number;
-  status: ProductStatus;
-};
-
-export type ShoppingListLightResponseDTO = {
-  id: string;
-  name: string;
+  purchased: boolean;
+  billId: string;
 };
 
 export type ShoppingListResponseDTO = {
   id: string;
   name: string;
-  products: ProductResponseDTO[];
 };
 
 export type UserOrganizationResponseDTO = {
   id: string;
+  status: UserOrganizationStatus;
   user: UserResponseDTO;
   organizationId: string;
   organizationName: string;
@@ -58,6 +55,12 @@ export type UserResponseDTO = {
   number: string;
   email: string;
 };
+
+export type TransactionResponseDTO = {
+  userFrom: UserResponseDTO;
+  userTo: UserResponseDTO;
+  amount: number;
+}
 
 export type Page<T> = {
   totalElements: number;

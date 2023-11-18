@@ -51,4 +51,9 @@ public class InvitationController {
     public void acceptInvitation(@PathVariable("id") UUID id, @RequestParam("isAccepted") boolean isAccepted){
         invitationService.acceptInvitation(id, isAccepted);
     }
+
+    @GetMapping("count/{id}")
+    public long countUserInvitation(@PathVariable("id") UUID id){
+        return this.invitationService.countInvitationForUser(id);
+    }
 }

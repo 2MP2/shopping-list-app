@@ -1,6 +1,7 @@
 import { AuthenticationRequest, UserRequestDTO } from "../model/dto/request";
 import { AuthenticationResponse } from "../model/dto/response";
-import { axiosInstance, updateAuthToken } from "./axios";
+import {axiosInstance, removeAuthToken, updateAuthToken} from "./axios";
+import { jwtDecode } from "jwt-decode";
 
 export async function login(
   userData: AuthenticationRequest,
@@ -10,7 +11,9 @@ export async function login(
     userData,
   );
   const authToken = response.data.token;
+  const decodedToken: any = jwtDecode(authToken);
   await updateAuthToken(authToken);
+  sessionStorage.setItem('id', decodedToken.id);
 
   return response.data;
 }
@@ -23,7 +26,14 @@ export async function register(
     userData,
   );
   const authToken = response.data.token;
+  const decodedToken: any = jwtDecode(authToken);
   await updateAuthToken(authToken);
+  sessionStorage.setItem('id', decodedToken.id);
 
   return response.data;
+}
+
+export function logout(){
+  removeAuthToken();
+  sessionStorage.removeItem('id');
 }

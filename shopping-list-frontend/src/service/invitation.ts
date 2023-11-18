@@ -54,3 +54,12 @@ export async function acceptInvitation(
 ): Promise<void> {
   await axiosInstance.post(`/invitation/accept/${id}?isAccepted=${isAccepted}`);
 }
+
+export async function countUserInvitation(
+    userId: string,
+): Promise<Number> {
+  const response = await axiosInstance.get<Number>(
+      `/invitation/count/${userId}`,
+  );
+  return response.data;
+}

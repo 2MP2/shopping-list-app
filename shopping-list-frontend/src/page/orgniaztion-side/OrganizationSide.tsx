@@ -1,12 +1,19 @@
-import React from 'react';
-import AfterLoginTemplate from "../../component/other/after-login-templet/AfterLoginTemplate";
+import ShoppingListClippedDrawer from "./ShoppingListClippedDrawer";
+import {useParams} from "react-router-dom";
+import UserListClippedDrawer from "./UserListClippedDrawer";
+import ProductCrudGrid from "./ProductCrudGrid";
+import BillAccordionList from "./BillAccordionList";
 
-function OrganizationSide() {
+export default function OrganizationSide() {
+    const { id } = useParams();
+    const isShoppingList = window.location.search.includes('shopping-list');
+
     return (
-        <div>
-            <AfterLoginTemplate></AfterLoginTemplate>
+        <div style={{ display: 'flex', marginLeft: 'auto', marginRight: 'auto' }}>
+            {id ? <ShoppingListClippedDrawer /> : null}
+            {id && isShoppingList ? <ProductCrudGrid /> : null}
+            {id && isShoppingList ? <BillAccordionList /> : null}
+            {id ? <UserListClippedDrawer /> : null}
         </div>
     );
 }
-
-export default OrganizationSide;

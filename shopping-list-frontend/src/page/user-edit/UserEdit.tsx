@@ -1,11 +1,12 @@
 import React from 'react';
+import UserInfoDisplay from "./UserInfoDisplay";
+import InvitationList from "./InvitationList";
 
-function UserEdit() {
+export default function UserEdit() {
     return (
         <div>
-            <h1>Edit User</h1>
+            <UserInfoDisplay/>
+            <InvitationList/>
         </div>
     );
 }
-
-export default UserEdit;

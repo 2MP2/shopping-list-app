@@ -83,7 +83,6 @@ public abstract class MappedCrudService<T extends Entity, U, D>
         }
         var entity = mapper.convertDtoToFullEntity(u);
         entity.setId(id);
-
         if(!isValidToUpdate(entity, u)) throw new AccessDeniedException("Access denied!");
         return mapper.convertEntityToDTO(repository.save(entity));
     }
