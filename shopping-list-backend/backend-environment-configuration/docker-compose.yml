@@ -18,7 +18,7 @@ services:
     expose:
       - 5432
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost:5433"]
+      test: ["CMD", "nc", "-z", "localhost:${POSTGRES_PORT}"]
       interval: 10s
       timeout: 1s
       retries: 3

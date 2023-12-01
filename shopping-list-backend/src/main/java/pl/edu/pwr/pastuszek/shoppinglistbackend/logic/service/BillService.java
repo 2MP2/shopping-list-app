@@ -93,7 +93,6 @@ public class BillService extends MappedCrudService<Bill, BillRequestDTO, BillRes
 
     public Map<UserResponseDTO, BigDecimal> calculateUserExpenses(UUID shoppingListId) {
         List<Bill> bills = ((BillRepository)repository).getBillsByShoppingListId(shoppingListId);
-
         // Calculate the total expenses for each user
         Map<UserResponseDTO, BigDecimal> userExpensesMap = bills.stream()
                 .collect(Collectors.groupingBy(
@@ -103,18 +102,15 @@ public class BillService extends MappedCrudService<Bill, BillRequestDTO, BillRes
                         },
                         Collectors.reducing(BigDecimal.ZERO, Bill::getAmount, BigDecimal::add)
                 ));
-
         // Calculate the total expenses for the entire shopping list
         BigDecimal totalExpenses = bills.stream()
                 .map(Bill::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Calculate the average expenses for the entire shopping list
-        BigDecimal averageExpenses = totalExpenses.divide(BigDecimal.valueOf(bills.size()), 2, RoundingMode.HALF_UP);
-
+        BigDecimal averageExpenses = totalExpenses.divide(BigDecimal.valueOf(userExpensesMap.size()), 2, RoundingMode.HALF_UP);
         // Adjust each user's expenses by subtracting the average expenses
         userExpensesMap.replaceAll((userId, expenses) -> expenses.subtract(averageExpenses));
-
         return userExpensesMap;
     }
 

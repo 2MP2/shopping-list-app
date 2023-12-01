@@ -15,9 +15,9 @@ public class BillRequestDTO {
     @Digits(integer = 10, fraction = 2, message = "Invalid format for amount")
     private BigDecimal amount;
     @NotBlank(message = "Shop shouldn't be blank")
-    @Size(max = 32, message = "Shop name is too long, max 32 characters")
+    @Size(max = 64, message = "Shop name is too long, max 32 characters")
     private String shop;
-    @Size(max = 256, message = "Comment is too long, max 256 characters")
+    @Size(max = 255, message = "Comment is too long, max 256 characters")
     private String comment;
     @NotNull(message = "Shopping list ID shouldn't be null")
     @org.hibernate.validator.constraints.UUID(message = "Invalid format of shopping list ID")

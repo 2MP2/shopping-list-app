@@ -51,7 +51,7 @@ public class WebSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.applyPermitDefaultValues();
         configuration.addAllowedMethod("*");
-
+//        configuration.addAllowedHeader("*"); //for ngrok
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
