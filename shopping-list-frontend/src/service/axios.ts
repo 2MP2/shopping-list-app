@@ -5,6 +5,8 @@ export const axiosInstance : AxiosInstance = axios.create({
   timeout: 10000,
 });
 
+// axiosInstance.defaults.headers.common['ngrok-skip-browser-warning'] = "0"; //for ngrok
+
 export async function updateAuthToken(authToken: string) : Promise<void> {
   sessionStorage.setItem("authToken", authToken);
 }
