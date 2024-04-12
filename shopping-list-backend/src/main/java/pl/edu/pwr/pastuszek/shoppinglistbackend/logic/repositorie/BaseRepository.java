@@ -7,6 +7,5 @@ import pl.edu.pwr.pastuszek.shoppinglistbackend.model.entity.Entity;
 
 import java.util.UUID;
 
-@SuppressWarnings("unused") // future feature
 @NoRepositoryBean
 public interface BaseRepository<T extends Entity> extends JpaRepository<T, UUID>, JpaSpecificationExecutor<T> {}

@@ -1,7 +1,7 @@
 import {DataGrid, GridColDef, GridRowsProp} from '@mui/x-data-grid';
 import {TransactionResponseDTO} from "../../model/dto/response";
 import {toast} from "react-toastify";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
 import {getTransactionsByShoppingId} from "../../service/bill";

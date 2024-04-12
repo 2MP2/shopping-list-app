@@ -61,7 +61,7 @@ export default function UserGrid() {
             field: 'status',
             headerName: 'Status',
             width: 140,
-            editable: true,
+            editable: !isButtonDisabled,
             type: 'singleSelect',
             valueOptions: [UserOrganizationStatus.USER, UserOrganizationStatus.ADMIN, UserOrganizationStatus.OWNER],
         },
