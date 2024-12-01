@@ -1,27 +1,85 @@
 version: "3.9"
 
 services:
-  database:
-    image: postgres:14-alpine
-    container_name: shopping-list-postgresql-database
+  pg-master-1:
+    image: bitnami/postgresql-repmgr:14
+    container_name: pg-master-1
     restart: unless-stopped
-    env_file: ./.env
-    environment:
-      - POSTGRES_USER
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB
-    volumes:
-      - shopping-list-data:/var/lib/postgresql
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     ports:
-      - "${POSTGRES_PORT}:5432"
-    expose:
-      - 5432
+      - 54321:5432
+    volumes:
+      - pg_master_data:/bitnami/postgresql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./config/postgresql/:/bitnami/postgresql/conf/conf.d/
+    environment:
+      - REPMGR_NODE_NAME=pg-master-1
+      - REPMGR_NODE_NETWORK_NAME=pg-master-1
+      - REPMGR_NODE_ID_START_SEED=2000
+    env_file:
+      - .env
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost:${POSTGRES_PORT}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -h localhost"]
       interval: 10s
-      timeout: 1s
+      timeout: 5s
       retries: 3
+
+  pg-slave-1:
+    image: bitnami/postgresql-repmgr:14
+    container_name: pg-slave-1
+    restart: unless-stopped
+    ports:
+      - 54322:5432
+    volumes:
+      - pg_slave_1_data:/bitnami/postgresql
+      - ./config/postgresql/:/bitnami/postgresql/conf/conf.d/
+    env_file:
+      - .env
+    environment:
+      - REPMGR_NODE_NAME=pg-slave-1
+      - REPMGR_NODE_NETWORK_NAME=pg-slave-1
+      - REPMGR_NODE_ID_START_SEED=3000
+
+  pg-slave-2:
+    image: bitnami/postgresql-repmgr:14
+    container_name: pg-slave-2
+    restart: unless-stopped
+    ports:
+      - 54323:5432
+    volumes:
+      - pg_slave_2_data:/bitnami/postgresql
+      - ./config/postgresql/:/bitnami/postgresql/conf/conf.d/
+    env_file:
+      - .env
+    environment:
+      - REPMGR_NODE_NAME=pg-slave-2
+      - REPMGR_NODE_NETWORK_NAME=pg-slave-2
+      - REPMGR_NODE_ID_START_SEED=4000
+
+  pgpool-proxy:
+    image: bitnami/pgpool:4
+    container_name: pgpool-proxy
+    restart: unless-stopped
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./config/.pcppass:/.pcppass
+    env_file:
+      - .env
+    environment:
+      - PGPOOL_BACKEND_NODES=0:pg-master-1:5432,1:pg-slave-1:5432,2:pg-slave-2:5432
+      - PGPOOL_ENABLE_LDAP=no
+      
+      - PGPOOL_SR_CHECK_USER=dev
+      - PGPOOL_POSTGRES_USERNAME=dev
+      - PGPOOL_ADMIN_USERNAME=admin
+
+      - PGPOOL_ENABLE_STATEMENT_LOAD_BALANCING=yes
+      - PGPOOL_ENABLE_LOG_PER_NODE_STATEMENT=yes
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend-app:
     container_name: shopping_app_backend
@@ -30,7 +88,10 @@ services:
     ports:
       - "${BACKEND_PORT}:8080"
     depends_on:
-      - database
+      pgpool-proxy:
+        condition: service_healthy
+      pg-master-1:
+        condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL
       - SPRING_DATASOURCE_USER
@@ -44,4 +105,6 @@ services:
       - "${FRONTEND_PORT}:80"
 
 volumes:
-  shopping-list-data:
+  pg_master_data:
+  pg_slave_1_data:
+  pg_slave_2_data:
